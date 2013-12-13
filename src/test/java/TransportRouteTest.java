@@ -35,7 +35,8 @@ public class TransportRouteTest extends TestCase {
     {
         r.add(50.464498f,30.518303f);
         r.add(50.896104f,34.813957f);
-        assertEquals(334208.0f, r.getLength());
+        assert(r.getLength().compareTo(334208.0f)==0);
+       // assertEquals(334208.0f, r.getLength());
 
     }
     public void testRouteLength3()
