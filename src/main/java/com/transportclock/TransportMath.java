@@ -6,7 +6,8 @@ package com.transportclock;
 public class TransportMath {
     public static Float calcDist(Float lat1, Float lng1, Float lat2, Float lng2)
     {
-        double earthRadius =  6372.8;
+        double earthRadius =6371000.8;
+        //double earthRadius =  6378137.0;
         double dLat = Math.toRadians(lat2-lat1);
         double dLng = Math.toRadians(lng2-lng1);
         double sindLat = Math.sin(dLat / 2);

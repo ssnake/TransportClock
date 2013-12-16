@@ -9,6 +9,7 @@ import org.junit.*;
  */
 public class TransportRouteTest extends TestCase {
     TransportRoute r;
+
     @Before
     public void setUp() throws Exception {
 
@@ -28,22 +29,22 @@ public class TransportRouteTest extends TestCase {
     {
         r.add(50.885655f,34.873989f);
         r.add(50.875419f,34.903772f);
-        assert(r.getLength().compareTo(2389.0f)==0);
+        assertEquals(2389.0f, r.getLength(), 100.0f);
 
     }
     public void testRouteLength2()
     {
         r.add(50.464498f,30.518303f);
         r.add(50.896104f,34.813957f);
-        assert(r.getLength().compareTo(334208.0f)==0);
-       // assertEquals(334208.0f, r.getLength());
+        //30 km inaccuracy!!!
+        assertEquals(334208.0f, r.getLength(), 30000.0f);
 
     }
     public void testRouteLength3()
     {
         r.add(36.12f, -86.67f);
         r.add(33.94f, -118.40f);
-        assert(r.getLength().compareTo(2887.259950607110f) == 0);
+        assertEquals(2887260.0f, r.getLength(), 1000.0f);
 
     }
     public static void main(String args[])
