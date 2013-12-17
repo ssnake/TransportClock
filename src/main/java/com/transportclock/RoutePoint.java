@@ -4,11 +4,26 @@ package com.transportclock;
  * Created by snake on 10.12.13.
  */
 public class RoutePoint {
+    public static final int  StartPoint = 1;
+    public static final int  FinishPoint = 2;
+    public static final int  BusStopPoint = 3;
+
     Float lat;
     Float lng;
+    int type;
+
+    public int getType() {
+        return type;
+    }
+
 
     public RoutePoint(Float lat, Float lng)
     {
+        this(lat, lng, BusStopPoint);
+    }
+    public RoutePoint(Float lat, Float lng, int pointType)
+    {
+        this.type = pointType;
         this.lat = lat;
         this.lng = lng;
     }
@@ -33,26 +48,8 @@ public class RoutePoint {
         RoutePoint p = (RoutePoint) obj;
         return lat.compareTo(p.getLat()) == 0 && lng.compareTo(p.getLng()) == 0;
     }
-    public class StartPoint extends RoutePoint
-    {
 
-        public StartPoint(Float lat, Float lng) {
-            super(lat, lng);
-        }
+    public boolean isBusStop() {
+        return getType() == BusStopPoint;
     }
-    public class FinishPoint extends RoutePoint {
-        public FinishPoint(Float lat, Float lng) {
-            super(lat, lng);
-        }
-    }
-
-    ;
-    public class StopPoint extends RoutePoint {
-        public StopPoint(Float lat, Float lng) {
-            super(lat, lng);
-        }
-    }
-
-    ;
-
 }

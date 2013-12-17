@@ -36,13 +36,14 @@ public class TransportRoute extends Vector<RoutePoint>{
         return TransportMath.calcDist(p1.getLat(), p1.getLng(), p2.getLat(), p2.getLng());
 
     }
-    RoutePoint findNearest(Class pointType, RoutePoint source_p)
+    RoutePoint findNearestBusStop(RoutePoint source_p)
     {
         Float dist = Float.MAX_VALUE;
         RoutePoint ret_p = null;
         for(RoutePoint p: this)
         {
-            if (calcDist(p, source_p) < dist)
+
+            if (p.isBusStop() && calcDist(p, source_p) < dist)
             {
                 ret_p = p ;
                 dist = calcDist(p, source_p);
@@ -54,11 +55,12 @@ public class TransportRoute extends Vector<RoutePoint>{
     public Float getDistance(RoutePoint p1, RoutePoint p2)
     {
         //find nearest BusStop;
-        RoutePoint.StopPoint pt;
-        pt = new RoutePoint.StartPoint();
-        RoutePoint np1 = findNearest(RoutePoint.StopPoint, p1);
-        RoutePoint np2 = findNearest(RoutePoint.StopPoint, p2);
-        return 0.0f;
+
+        RoutePoint np1 = findNearestBusStop(p1);
+        RoutePoint np2 = findNearestBusStop(p2);
+        int i1 = this.indexOf(np1);
+        int i2 = this.indexOf(np2);
+        return getDistnace(i1, i2);
     }
 
     public Float getLength() {
