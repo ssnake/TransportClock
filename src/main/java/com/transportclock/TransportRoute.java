@@ -1,6 +1,8 @@
 package com.transportclock;
 
+import java.io.StringWriter;
 import java.util.Vector;
+import org.json.JSONWriter;
 
 /**
  * Created by snake on 10.12.13.
@@ -69,5 +71,18 @@ public class TransportRoute extends Vector<RoutePoint>{
         else
             return 0.0f;
 
+    }
+
+    public String toJSON() {
+        StringWriter sw = new StringWriter();
+
+        JSONWriter ar = new JSONWriter(sw).array();
+        for(RoutePoint p: this)
+        {
+            ar.value(p.toJSON());
+        }
+        ar.endArray();
+
+        return sw.toString() ;
     }
 }

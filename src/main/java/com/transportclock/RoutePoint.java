@@ -1,9 +1,16 @@
 package com.transportclock;
 
+import org.json.JSONObject;
+import org.json.JSONWriter;
+
+import java.io.StringWriter;
+
 /**
  * Created by snake on 10.12.13.
  */
 public class RoutePoint {
+    private static final String latField = "lat";
+    private static final String lngField = "lng";
     public static final int  StartPoint = 1;
     public static final int  FinishPoint = 2;
     public static final int  BusStopPoint = 3;
@@ -48,6 +55,12 @@ public class RoutePoint {
         RoutePoint p = (RoutePoint) obj;
         return lat.compareTo(p.getLat()) == 0 && lng.compareTo(p.getLng()) == 0;
     }
+
+    public String toJSON() {
+
+        return new JSONObject(this).toString();
+    }
+
 
     public boolean isBusStop() {
         return getType() == BusStopPoint;

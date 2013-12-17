@@ -47,6 +47,17 @@ public class TransportRouteTest extends TestCase {
         assertEquals(2887260.0f, r.getLength(), 1000.0f);
 
     }
+    public void testPointToJSON()
+    {
+        assertEquals("{\"lng\":22.44,\"lat\":11.23}", new RoutePoint(11.23f, 22.44f).toJSON());
+    }
+    public void testRouteToJSON()
+    {
+        TransportRoute r = new TransportRoute();
+        r.add(1.1f, 2.3f);
+        r.add(2.2f, 3.3f);
+        assertEquals("[\"{\\\"lng\\\":2.3,\\\"lat\\\":1.1}\",\"{\\\"lng\\\":3.3,\\\"lat\\\":2.2}\"]", r.toJSON());
+    }
     public static void main(String args[])
     {
         junit.textui.TestRunner.run(TransportRouteTest.class);
