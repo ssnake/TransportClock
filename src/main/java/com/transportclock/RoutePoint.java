@@ -58,7 +58,14 @@ public class RoutePoint {
 
     public String toJSON() {
 
-        return new JSONObject(this).toString();
+        //return new JSONObject(this, new String[]{"lat", "lng"}).toString();
+        StringWriter sw = new StringWriter();
+
+       JSONWriter jw = new JSONWriter(sw);
+       jw.object().key(lngField).value(lng).key(latField).value(lat).endObject();
+
+
+        return sw.toString() ;
     }
 
 

@@ -51,6 +51,20 @@ public class TransportRouteTest extends TestCase {
     {
         assertEquals("{\"lng\":22.44,\"lat\":11.23}", new RoutePoint(11.23f, 22.44f).toJSON());
     }
+    public void testGetDistance()
+    {
+        r.add(1.0f, 1.0f);
+        r.add(2.0f, 1.0f);
+        r.add(3.0f, 1.0f);
+        r.add(4.0f, 1.0f);
+        Float dist = r.getDistance(new RoutePoint(1.6f,0.0f), new RoutePoint(10.0f,0.0f));
+        assertFalse(r.getLength().compareTo(dist) == 0 );
+        dist = r.getDistance(new RoutePoint(-0.5f,0.0f), new RoutePoint(10.0f,0.0f));
+        assertEquals(r.getLength(), dist);
+
+
+
+    }
     public void testRouteToJSON()
     {
         TransportRoute r = new TransportRoute();
