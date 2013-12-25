@@ -6,7 +6,6 @@ import android.app.*;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -204,7 +203,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             mvProxy = new MapViewProxyOSM(mMapView, this.getActivity());
             mvProxy.setBuiltInZoomControls(true);
             mvProxy.setMultiTouchControls(true);
-            mvProxy.setZoom(7);
+            mvProxy.setZoom(15);
             mvProxy.showCompassOverlay(true);
 
             MapViewOverlayProxy marks = mvProxy.addOverlay(R.drawable.ic_launcher);
@@ -220,6 +219,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                 }
             });
             marks.addPoint(new GeoPoint(0,0), "test1","ttt");
+
+            mvProxy.setCenter(new GeoPoint(50.90633, 34.81854));
             return mMapView;
         }
     }
