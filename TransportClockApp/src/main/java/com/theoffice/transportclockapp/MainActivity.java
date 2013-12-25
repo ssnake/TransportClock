@@ -2,11 +2,7 @@ package com.theoffice.transportclockapp;
 
 import java.util.Locale;
 
-import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.*;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -18,7 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.OverlayItem;
+
 public class MainActivity extends Activity implements ActionBar.TabListener {
 
     /**
@@ -196,13 +195,33 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     }
     public class MapFragment extends Fragment{
         MapView mMapView;
+        MapViewProxy mvProxy;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View mapView = inflater.inflate(R.layout.fragment_map, container, false);
             mMapView = (MapView) mapView.findViewById(R.id.mapview);
+            mvProxy = new MapViewProxyOSM(mMapView, this.getActivity());
+            mvProxy.setBuiltInZoomControls(true);
+            mvProxy.setMultiTouchControls(true);
+            mvProxy.setZoom(7);
+            mvProxy.showCompassOverlay(true);
 
+            MapViewOverlayProxy marks = mvProxy.addOverlay(R.drawable.ic_launcher);
+            marks.setOnMarkClickListiner(new MapViewOverlayProxy.OnMarkClickListiner()
+            {
+                @Override
+                public void onClick(OverlayItem item) {
+                    AlertDialog.Builder dlg = new AlertDialog.Builder(getActivity());
+                    dlg.setTitle(item.getTitle());
+                    dlg.setMessage(item.getSnippet());
+                    dlg.show();
+
+                }
+            });
+            marks.addPoint(new GeoPoint(0,0), "test1","ttt");
             return mMapView;
         }
     }
+
 }
