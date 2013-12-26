@@ -16,7 +16,7 @@ public class MapViewProxyOSM extends MapViewProxy {
     MapView mMapView;
     Context mContext;
     CompassOverlay mCompOverlay;
-    Vector<MapViewOverlayProxy> mOverlayList = new Vector<MapViewOverlayProxy>();
+    Vector<MapViewMarksOverlayProxy> mOverlayList = new Vector<MapViewMarksOverlayProxy>();
 
     public MapViewProxyOSM(MapView mapView, Context context) {
         this.mMapView = mapView;
@@ -40,6 +40,8 @@ public class MapViewProxyOSM extends MapViewProxy {
         mMapView.setBuiltInZoomControls(enable);
     }
 
+
+
     @Override
     public void showCompassOverlay(Boolean show) {
 
@@ -62,15 +64,20 @@ public class MapViewProxyOSM extends MapViewProxy {
     }
 
     @Override
+    public MapViewPathOverlayProxy addPathOverlay(int default_color) {
+        return new MapViewPathOverlayProxyOSM(mContext, mMapView.getOverlays(), default_color);
+    }
+
+    @Override
     public void setZoom(Integer value) {
 
         mMapView.getController().setZoom(value);
     }
 
     @Override
-    public MapViewOverlayProxy addOverlay(Integer drawable_resource_id) {
-        Drawable drawable = mContext.getResources().getDrawable(drawable_resource_id);
-        MapViewOverlayProxy ret = new MapViewOverlayProxyOSM(drawable, this.mMapView);
+    public MapViewMarksOverlayProxy addMarksOverlay(Integer default_drawable_id) {
+        Drawable drawable = mContext.getResources().getDrawable(default_drawable_id);
+        MapViewMarksOverlayProxy ret = new MapViewMarksOverlayProxyOSM(drawable, this.mMapView);
         mOverlayList.add(ret);
         return ret;
     }

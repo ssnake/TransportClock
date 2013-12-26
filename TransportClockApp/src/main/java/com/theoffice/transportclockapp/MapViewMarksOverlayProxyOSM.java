@@ -15,17 +15,17 @@ import java.util.Vector;
 /**
  * Created by snake on 25.12.13.
  */
-public class MapViewOverlayProxyOSM extends MapViewOverlayProxy {
-    MapView mapView;
-    List<Overlay> listOverlay;
+public class MapViewMarksOverlayProxyOSM extends MapViewMarksOverlayProxy {
+    protected MapView mMapView;
+    protected List<Overlay> mListOverlay;
     MarksOverlay marksOverlay;
     OnMarkClickListiner listiner;
 
-    public MapViewOverlayProxyOSM(Drawable drawable, MapView mapView) {
-        this.mapView = mapView;
-        this.listOverlay = mapView.getOverlays();
+    public MapViewMarksOverlayProxyOSM(Drawable drawable, MapView mapView) {
+        this.mMapView = mapView;
+        this.mListOverlay = mapView.getOverlays();
         this.marksOverlay = new MarksOverlay(drawable, mapView, this);
-        listOverlay.add(marksOverlay);
+        mListOverlay.add(marksOverlay);
 
 
     }
@@ -44,9 +44,9 @@ public class MapViewOverlayProxyOSM extends MapViewOverlayProxy {
     public class MarksOverlay extends ItemizedOverlay<OverlayItem> {
         private Vector<OverlayItem> itemList = new Vector<OverlayItem>();
         private MapView mapView;
-        private MapViewOverlayProxyOSM overlayProxy;
+        private MapViewMarksOverlayProxyOSM overlayProxy;
         // constructor
-        public MarksOverlay(Drawable drawable, MapView mapView, MapViewOverlayProxyOSM overlayProxy){
+        public MarksOverlay(Drawable drawable, MapView mapView, MapViewMarksOverlayProxyOSM overlayProxy){
             super(drawable, mapView.getResourceProxy());
             this.mapView = mapView;
             this.overlayProxy = overlayProxy;
@@ -66,6 +66,7 @@ public class MapViewOverlayProxyOSM extends MapViewOverlayProxy {
         public void addItem(OverlayItem item)
         {
             itemList.add(item);
+
             populate();
         }
         @Override

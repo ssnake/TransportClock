@@ -7,8 +7,9 @@ import org.json.JSONObject;
  * Created by snake on 17.12.13.
  */
 public class RouteGPSImporter {
-    static final String latField = "lat";
-    static final String lngField = "lng";
+    //yes lat=lng, gps tracker has issue, dunno why by fields lat and lgn are mixed
+    static final String latField = "lng";
+    static final String lngField = "lat";
     static final String directionField = "direction";
     public static RoutePoint loadRoutePoint(JSONObject jo)
     {

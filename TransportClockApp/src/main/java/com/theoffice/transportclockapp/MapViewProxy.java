@@ -10,7 +10,8 @@ public abstract class MapViewProxy {
     public abstract void setBuiltInZoomControls(Boolean enable);
     public abstract void setZoom(Integer value);
     public abstract void showCompassOverlay(Boolean show);
-    public abstract MapViewOverlayProxy addOverlay(Integer i);
+    public abstract MapViewMarksOverlayProxy addMarksOverlay(Integer default_drawable_id);
+    public abstract MapViewPathOverlayProxy addPathOverlay(int default_color);
     public abstract void setCenter(GeoPoint point);
 
 }
