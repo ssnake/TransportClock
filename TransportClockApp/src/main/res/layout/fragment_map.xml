@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
     <org.osmdroid.views.MapView
             android:id="@+id/mapview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tilesource="Mapnik"
-            >
-    </org.osmdroid.views.MapView>
-</LinearLayout>
+            />
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Routes"
+            android:id="@+id/button" android:layout_gravity="center_horizontal" android:layout_alignParentEnd="false"
+            android:background="#ffffff" android:textColor="@android:color/black"
+            android:textColorHighlight="@android:color/holo_blue_light" android:clickable="true"
+            android:enabled="true" android:focusable="true" android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"/>
+    <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView" android:layout_above="@+id/button" android:layout_alignRight="@+id/button"
+            />
+
+</RelativeLayout>

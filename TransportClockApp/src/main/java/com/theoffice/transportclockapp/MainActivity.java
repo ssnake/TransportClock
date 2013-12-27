@@ -1,6 +1,7 @@
 package com.theoffice.transportclockapp;
 
 import java.io.*;
+import java.util.Vector;
 
 import android.app.*;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ListView;
 import com.transportclock.RouteGPSImporter;
 import com.transportclock.RoutePoint;
 import com.transportclock.TransportRoute;
@@ -120,6 +122,8 @@ public class MainActivity extends FragmentActivity {
 
             mvProxy.setCenter(new GeoPoint(50.90633, 34.81854));
             addRoute();
+            ListView lw = (ListView) mapView.findViewById(R.id.listView);
+            lw.setAdapter(new RouteListAdapter(this.getActivity(), 0, new Vector<TransportRoute>()));
             return mapView;
         }
     }
