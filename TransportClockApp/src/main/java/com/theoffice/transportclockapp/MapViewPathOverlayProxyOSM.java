@@ -16,16 +16,26 @@ public class MapViewPathOverlayProxyOSM extends MapViewPathOverlayProxy {
 
     List<Overlay> mListOverlay;
     PathOverlay mPathOverlay;
+
+
+
     public MapViewPathOverlayProxyOSM(Context context, List<Overlay> listOverlay, int default_color) {
         this.mListOverlay = listOverlay;
         this.mPathOverlay = new PathOverlay(default_color, context);
         this.mListOverlay.add(mPathOverlay);
+
     }
+
 
     @Override
     public void addPoint(GeoPoint point) {
         mPathOverlay.addPoint(point);
 
 
+    }
+
+    @Override
+    public void free() {
+        mListOverlay.remove(mPathOverlay);
     }
 }

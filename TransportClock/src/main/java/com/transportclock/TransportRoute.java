@@ -9,6 +9,22 @@ import org.json.JSONWriter;
  * The class for Transport route
  */
 public class TransportRoute extends Vector<RoutePoint>{
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private String name;
+
+    public TransportRoute(String name) {
+        setName(name);
+    }
+    public TransportRoute(){
+        this("");
+    }
 
     public  RoutePoint add(Float lat, Float lng)
     {

@@ -16,7 +16,8 @@ public class MapViewProxyOSM extends MapViewProxy {
     MapView mMapView;
     Context mContext;
     CompassOverlay mCompOverlay;
-    Vector<MapViewMarksOverlayProxy> mOverlayList = new Vector<MapViewMarksOverlayProxy>();
+    Vector<MapViewMarksOverlayProxy> mMarksOverlayList = new Vector<MapViewMarksOverlayProxy>();
+    Vector<MapViewPathOverlayProxy> mPathOverlayList = new Vector<MapViewPathOverlayProxy>();
 
     public MapViewProxyOSM(MapView mapView, Context context) {
         this.mMapView = mapView;
@@ -32,6 +33,14 @@ public class MapViewProxyOSM extends MapViewProxy {
     @Override
     public void setCenter(GeoPoint point) {
         mMapView.getController().setCenter(point);
+
+
+    }
+
+    @Override
+    public void delPathOverlay(MapViewPathOverlayProxy pathOverlay) {
+        pathOverlay.free();
+        mPathOverlayList.remove(pathOverlay);
 
     }
 
@@ -65,7 +74,9 @@ public class MapViewProxyOSM extends MapViewProxy {
 
     @Override
     public MapViewPathOverlayProxy addPathOverlay(int default_color) {
-        return new MapViewPathOverlayProxyOSM(mContext, mMapView.getOverlays(), default_color);
+        MapViewPathOverlayProxy pop = new MapViewPathOverlayProxyOSM(mContext, mMapView.getOverlays(), default_color);
+        mPathOverlayList.add(pop);
+        return pop;
     }
 
     @Override
@@ -78,7 +89,7 @@ public class MapViewProxyOSM extends MapViewProxy {
     public MapViewMarksOverlayProxy addMarksOverlay(Integer default_drawable_id) {
         Drawable drawable = mContext.getResources().getDrawable(default_drawable_id);
         MapViewMarksOverlayProxy ret = new MapViewMarksOverlayProxyOSM(drawable, this.mMapView);
-        mOverlayList.add(ret);
+        mMarksOverlayList.add(ret);
         return ret;
     }
 }
