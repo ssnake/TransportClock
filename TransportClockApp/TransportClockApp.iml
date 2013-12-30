@@ -74,7 +74,6 @@
     <orderEntry type="library" exported="" name="support-v13-19.0.0" level="project" />
     <orderEntry type="library" exported="" name="osmdroid-android-4.0" level="project" />
     <orderEntry type="library" exported="" name="slf4j-android-1.6.1-RC1" level="project" />
-    <orderEntry type="module" module-name="TransportClock-TransportClock" />
   </component>
 </module>
 
