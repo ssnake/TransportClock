@@ -1,6 +1,9 @@
 package com.theoffice.transportclockapp;
 
 import java.io.*;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Vector;
 
 import android.app.*;
@@ -13,7 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.ListView;
+import android.widget.*;
 import com.transportclock.RouteGPSImporter;
 import com.transportclock.RoutePoint;
 import com.transportclock.TransportRoute;
@@ -54,36 +57,17 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    public class MapFragment extends Fragment{
+    public class MapFragment extends Fragment implements  View.OnClickListener{
         MapView mMapView;
         MapViewProxy mvProxy;
-
-        String readRawJSON(int resource_id)
-        {
-            InputStream is = getResources().openRawResource(resource_id);
-            Writer w = new StringWriter();
-            char[] buffer = new char[1024];
-            try {
-                Reader r = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                int n;
-                while((n= r.read(buffer)) != -1)
-                {
-                    w.write(buffer, 0, n);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return w.toString();
-
-        }
-        void addRoute()
-        {
-            String json = readRawJSON(R.raw.route1);
-            TransportRoute r = RouteGPSImporter.load(json, false);
-            addRouteToMap(r);
+        TransportClient mClient;
+        List<TransportRoute> mRouteList;
+        RouteSelectedListener mRouteSelectedListiner;
+        UISettings mSettings;
+        RoutesRender mRouteRender;
 
 
-        }
+
         void addRouteToMap(TransportRoute route)
         {
             MapViewMarksOverlayProxy route_overlay = mvProxy.addMarksOverlay(R.drawable.ic_launcher);
@@ -94,6 +78,28 @@ public class MainActivity extends FragmentActivity {
             }
 
         }
+        void loadRoutes()
+        {
+            mClient.loadAllRoutes(mRouteList);
+
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            mClient = new TransportClientLocal(this.getActivity());
+            mRouteList = new Vector<TransportRoute>();
+
+            mSettings = new UISettings(new UISettingsObserver(this));
+
+            loadRoutes();
+        }
+
+        void bindUI(View root){
+            Button b = (Button) root.findViewById(R.id.btnChooseRoutes);
+            b.setOnClickListener(this);
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View mapView = inflater.inflate(R.layout.fragment_map, null, false);
@@ -103,12 +109,14 @@ public class MainActivity extends FragmentActivity {
             mvProxy.setBuiltInZoomControls(true);
             mvProxy.setMultiTouchControls(true);
             mvProxy.setZoom(15);
-            mvProxy.showCompassOverlay(true);
-            TransportRoute tr = new TransportRoute();
+
+            mRouteRender = new RoutesRender(mvProxy);
+            mRouteSelectedListiner = new RouteSelectedListener(mSettings, mRouteRender);
+
+
 
             MapViewMarksOverlayProxy marks = mvProxy.addMarksOverlay(R.drawable.ic_launcher);
-            marks.setOnMarkClickListiner(new MapViewMarksOverlayProxy.OnMarkClickListiner()
-            {
+            marks.setOnMarkClickListiner(new MapViewMarksOverlayProxy.OnMarkClickListiner() {
                 @Override
                 public void onClick(OverlayItem item) {
                     AlertDialog.Builder dlg = new AlertDialog.Builder(getActivity());
@@ -121,10 +129,61 @@ public class MainActivity extends FragmentActivity {
             marks.addPoint(new GeoPoint(0,0), "test1","ttt");
 
             mvProxy.setCenter(new GeoPoint(50.90633, 34.81854));
-            addRoute();
-            ListView lw = (ListView) mapView.findViewById(R.id.listView);
-            lw.setAdapter(new RouteListAdapter(this.getActivity(), 0, new Vector<TransportRoute>()));
+
+            bindUI(mapView);
+            //ListView lw = (ListView) mapView.findViewById(R.id.listView);
+            //lw.setAdapter(new RouteListAdapter(this.getActivity(), 0,mRouteList));
             return mapView;
+        }
+        public void onChooseRouteClick(View view)
+        {
+            //Toast.makeText(this.getActivity(),"click", Toast.LENGTH_SHORT).show();
+            ListPopupWindow pop = new ListPopupWindow(this.getActivity());
+            pop.setAnchorView(view);
+            pop.setAdapter(new RouteListAdapter(this.getActivity(), mRouteList, mSettings, mRouteSelectedListiner));
+            pop.show();
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch(v.getId()){
+                case R.id.btnChooseRoutes:
+                    onChooseRouteClick(v);
+                    break;
+            }
+        }
+        class RouteSelectedListener implements View.OnClickListener
+        {
+            UISettings mSettings;
+            RoutesRender mRouteRender;
+            RouteSelectedListener(UISettings settings, RoutesRender render) {
+                mSettings = settings;
+                mRouteRender = render;
+            }
+
+            @Override
+            public void onClick(View v) {
+                CheckBox cb = (CheckBox) v;
+                TransportRoute r = (TransportRoute) v.getTag();
+                mSettings.setVisiable(r, cb.isChecked());
+                mRouteRender.showRoute(r, cb.isChecked());
+
+
+            }
+        }
+        class UISettingsObserver implements Observer{
+            MapFragment mMapFragmen;
+            UISettingsObserver(MapFragment mapFragment) {
+                mMapFragmen = mapFragment;
+            }
+
+            @Override
+            public void update(Observable observable, Object data) {
+
+
+
+
+            }
         }
     }
 

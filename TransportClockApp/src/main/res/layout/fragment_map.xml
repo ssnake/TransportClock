@@ -15,15 +15,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Routes"
-            android:id="@+id/button" android:layout_gravity="center_horizontal" android:layout_alignParentEnd="false"
-            android:background="#ffffff" android:textColor="@android:color/black"
-            android:textColorHighlight="@android:color/holo_blue_light" android:clickable="true"
-            android:enabled="true" android:focusable="true" android:layout_alignParentBottom="true"
+            android:id="@+id/btnChooseRoutes" android:layout_gravity="center_horizontal" android:layout_alignParentEnd="false"
+            android:clickable="true"
+            android:enabled="true" android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"/>
-    <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/listView" android:layout_above="@+id/button" android:layout_alignRight="@+id/button"
-            />
 
 </RelativeLayout>

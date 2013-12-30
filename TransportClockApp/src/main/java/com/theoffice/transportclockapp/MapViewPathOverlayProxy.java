@@ -7,5 +7,6 @@ import org.osmdroid.util.GeoPoint;
  */
 public abstract class MapViewPathOverlayProxy {
     public abstract void addPoint(GeoPoint point);
+    public abstract void free();
 
 }
