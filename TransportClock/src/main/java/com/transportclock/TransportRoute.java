@@ -9,15 +9,11 @@ import org.json.JSONWriter;
  * The class for Transport route
  */
 public class TransportRoute extends Vector<RoutePoint>{
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    private int id;
     private String name;
+
+
 
     public TransportRoute(String name) {
         setName(name);
@@ -100,5 +96,22 @@ public class TransportRoute extends Vector<RoutePoint>{
         ar.endArray();
 
         return sw.toString() ;
+    }
+    //place for getters and setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
