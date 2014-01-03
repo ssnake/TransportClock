@@ -2,6 +2,11 @@ import com.transportclock.RouteGPSImporter;
 import com.transportclock.TransportRoute;
 import junit.framework.TestCase;
 
+import org.apache.commons.io.IOUtils;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by snake on 17.12.13.
  */
@@ -24,6 +29,24 @@ public class RouteGPSImporterTest extends TestCase {
         assertEquals(50.94291f, r2.get(1).getLat(), 1.0f);
 
     }
+    public void testLoadAllRoutes()
+    {
+        InputStream is = this.getClass().getResourceAsStream("all_routes.json");
+        StringWriter w = new StringWriter();
+        String json = "";
+        try {
+            IOUtils.copy(is, w);
+            json = w.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        List<TransportRoute> listRoute = new ArrayList<TransportRoute>();
+        RouteGPSImporter.loadRoutes(json, listRoute);
+
+        assertTrue(listRoute.size() > 0);
+    }
+
     public static void main(String args[])
     {
         junit.textui.TestRunner.run(RouteGPSImporterTest.class);

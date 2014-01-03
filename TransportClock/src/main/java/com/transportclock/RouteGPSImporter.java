@@ -81,9 +81,13 @@ public class RouteGPSImporter {
             JSONObject jo = ja.getJSONObject(i);
             TransportRoute route = JSON2Route(jo);
             //check if it 's already present in list
-            TransportRoute existed_route = ((TransportRouteList) routeList).findByID(route.getId());
+
+            TransportRoute existed_route = TransportRouteList.findByID(route.getId(), routeList);
             if (existed_route != null)
                 route = existed_route;
+            else
+               routeList.add(route);
+
             route.add(JSON2Point(jo));
         }
 
