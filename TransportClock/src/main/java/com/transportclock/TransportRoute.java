@@ -12,6 +12,7 @@ public class TransportRoute extends Vector<RoutePoint>{
 
     private int id;
     private String name;
+    private Boolean direction;
 
 
 
@@ -113,5 +114,12 @@ public class TransportRoute extends Vector<RoutePoint>{
 
     public void setId(int id) {
         this.id = id;
+    }
+    public Boolean getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Boolean direction) {
+        this.direction = direction;
     }
 }

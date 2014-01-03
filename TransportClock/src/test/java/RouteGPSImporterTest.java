@@ -44,7 +44,7 @@ public class RouteGPSImporterTest extends TestCase {
         List<TransportRoute> listRoute = new ArrayList<TransportRoute>();
         RouteGPSImporter.loadRoutes(json, listRoute);
 
-        assertTrue(listRoute.size() > 0);
+        assertTrue(listRoute.size() == 28);
     }
 
     public static void main(String args[])

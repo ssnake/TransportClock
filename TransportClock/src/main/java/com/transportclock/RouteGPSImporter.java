@@ -48,9 +48,16 @@ public class RouteGPSImporter {
 
     private static TransportRoute JSON2Route(JSONObject jo) {
         TransportRoute route = new TransportRoute();
+        int id = -1;
+        Boolean dir = false;
         if (jo.has(idField))
-            route.setId(jo.getInt(idField));
-        //if (jo.has(id_routeField))
+            id = jo.getInt(idField);
+        if (jo.has(directionField))
+            dir = jo.getString(directionField).compareToIgnoreCase("t")==0;
+
+        route.setId(id);
+        route.setDirection(dir);
+
 
         return route;
     }
@@ -72,6 +79,7 @@ public class RouteGPSImporter {
         return r;
 
     }
+
     public static void loadRoutes(String json, List<TransportRoute> routeList)
     {
         JSONArray ja = new JSONArray(json);
