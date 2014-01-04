@@ -10,10 +10,10 @@ import org.json.JSONWriter;
  */
 public class TransportRoute extends Vector<RoutePoint>{
 
-    private int id;
-    private String name;
-    private Boolean direction;
-
+    int id;
+    String name;
+    Boolean direction;
+    String number;
 
 
     public TransportRoute(String name) {
@@ -122,4 +122,13 @@ public class TransportRoute extends Vector<RoutePoint>{
     public void setDirection(Boolean direction) {
         this.direction = direction;
     }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
 }

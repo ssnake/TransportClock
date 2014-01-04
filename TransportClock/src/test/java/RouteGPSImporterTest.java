@@ -1,5 +1,6 @@
 import com.transportclock.RouteGPSImporter;
 import com.transportclock.TransportRoute;
+import com.transportclock.TransportRouteList;
 import junit.framework.TestCase;
 
 import org.apache.commons.io.IOUtils;
@@ -11,6 +12,32 @@ import java.util.List;
  * Created by snake on 17.12.13.
  */
 public class RouteGPSImporterTest extends TestCase {
+    String allRoutes;
+    String allNames;
+    List<TransportRoute> listRoute;
+
+    private String resource2String(String res_name) {
+        InputStream is = this.getClass().getResourceAsStream(res_name);
+        StringWriter w = new StringWriter();
+        String ret = "";
+        try {
+            IOUtils.copy(is, w);
+            ret = w.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+
+        allRoutes = resource2String("all_routes.json");
+        allNames = resource2String("route_names.json");
+        listRoute = new ArrayList<TransportRoute>();
+    }
+
     public void testLoad()
     {
         final String s = "[{\"id_route\":\"824\",\"lat\":\"34.7408\",\"lng\":\"50.94468\",\"direction\":\"t\"},{\"id_route\":\"824\",\"lat\":\"34.75007\",\"lng\":\"50.94359\",\"direction\":\"t\"},"+
@@ -29,22 +56,21 @@ public class RouteGPSImporterTest extends TestCase {
         assertEquals(50.94291f, r2.get(1).getLat(), 1.0f);
 
     }
-    public void testLoadAllRoutes()
-    {
-        InputStream is = this.getClass().getResourceAsStream("all_routes.json");
-        StringWriter w = new StringWriter();
-        String json = "";
-        try {
-            IOUtils.copy(is, w);
-            json = w.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        List<TransportRoute> listRoute = new ArrayList<TransportRoute>();
-        RouteGPSImporter.loadRoutes(json, listRoute);
+    public void testLoadAllRoutes() {
+        RouteGPSImporter.loadRoutes(allRoutes, listRoute);
 
-        assertTrue(listRoute.size() == 28);
+        assertEquals(28, listRoute.size());
+    }
+
+    public void testLoadAllNames() {
+        RouteGPSImporter.loadRoutes(allRoutes, listRoute);
+        RouteGPSImporter.loadNames(allNames, listRoute);
+        TransportRoute r = TransportRouteList.findByID(0, listRoute);
+        assertEquals("01 Роменська - Гамалiя", r.getName());
+        assertEquals("01", r.getNumber());
+
+
     }
 
     public static void main(String args[])

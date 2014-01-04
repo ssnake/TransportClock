@@ -16,6 +16,8 @@ public class RouteGPSImporter {
     static final String directionField = "direction";
     static final String id_routeField = "id_route";
     static final String idField = "id";
+    static final String numberField = "num";
+    static final String nameField = "name";
 
     public static RoutePoint JSON2Point(JSONObject jo)
     {
@@ -50,13 +52,22 @@ public class RouteGPSImporter {
         TransportRoute route = new TransportRoute();
         int id = -1;
         Boolean dir = false;
+        String name = "";
+        String number = "";
+
         if (jo.has(idField))
             id = jo.getInt(idField);
         if (jo.has(directionField))
             dir = jo.getString(directionField).compareToIgnoreCase("t")==0;
+        if (jo.has(nameField))
+            name = jo.getString(nameField);
+        if (jo.has(numberField))
+            number = jo.getString(numberField);
 
         route.setId(id);
         route.setDirection(dir);
+        route.setName(name);
+        route.setNumber(number);
 
 
         return route;
@@ -80,8 +91,7 @@ public class RouteGPSImporter {
 
     }
 
-    public static void loadRoutes(String json, List<TransportRoute> routeList)
-    {
+    public static void loadRoutes(String json, List<TransportRoute> routeList) {
         JSONArray ja = new JSONArray(json);
 
         for(int i=0; i<ja.length(); i++)
@@ -98,6 +108,22 @@ public class RouteGPSImporter {
 
             route.add(JSON2Point(jo));
         }
+
+    }
+
+    public static void loadNames(String json, List<TransportRoute> routeList) {
+        JSONArray ja = new JSONArray(json);
+        for (int i = 0; i < ja.length(); i++) {
+            JSONObject jo = ja.getJSONObject(i);
+            TransportRoute route = JSON2Route(jo);
+            TransportRoute existed_route = TransportRouteList.findByID(route.getId(), routeList);
+            if (existed_route != null) {
+                existed_route.setName(route.getName());
+                existed_route.setNumber(route.getNumber());
+            }
+
+        }
+
 
     }
 }
