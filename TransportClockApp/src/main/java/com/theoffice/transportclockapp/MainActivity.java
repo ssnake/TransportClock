@@ -126,7 +126,6 @@ public class MainActivity extends FragmentActivity {
 
                 }
             });
-            marks.addPoint(new GeoPoint(0,0), "test1","ttt");
 
             mvProxy.setCenter(new GeoPoint(50.90633, 34.81854));
 

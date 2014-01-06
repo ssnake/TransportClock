@@ -44,6 +44,7 @@ public class TransportClientLocal extends TransportClient {
     }
     @Override
     public void loadAllRoutes(List<TransportRoute> routeList) {
-        routeList.add(addRoute());
+        RouteGPSImporter.loadRoutes(readRawJSON(R.raw.all_routes), routeList);
+        RouteGPSImporter.loadNames(readRawJSON(R.raw.route_names), routeList);
     }
 }

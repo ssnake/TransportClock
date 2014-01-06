@@ -9,6 +9,8 @@ import java.util.HashMap;
 
 /**
  * Created by snake on 12/29/13.
+ *
+ * RouteRender - class which show specified route on map if necessary
  */
 public class RoutesRender {
     MapViewProxy mMapViewProxy;
