@@ -37,8 +37,9 @@ public class TransportClientLocal extends TransportClient {
     }
     TransportRoute addRoute()
     {
-        String json = readRawJSON(R.raw.route1);
-        return RouteGPSImporter.load(json, false);
+        //String json = readRawJSON(R.raw.route1);
+        //return RouteGPSImporter.load(json, false);
+        return null;
 
 
     }

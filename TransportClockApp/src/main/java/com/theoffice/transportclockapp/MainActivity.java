@@ -139,6 +139,7 @@ public class MainActivity extends FragmentActivity {
             //Toast.makeText(this.getActivity(),"click", Toast.LENGTH_SHORT).show();
             ListPopupWindow pop = new ListPopupWindow(this.getActivity());
             pop.setAnchorView(view);
+
             pop.setAdapter(new RouteListAdapter(this.getActivity(), mRouteList, mSettings, mRouteSelectedListiner));
             pop.show();
         }
