@@ -74,7 +74,7 @@ public class MapViewProxyOSM extends MapViewProxy {
 
     @Override
     public MapViewPathOverlayProxy addPathOverlay(int default_color) {
-        MapViewPathOverlayProxy pop = new MapViewPathOverlayProxyOSM(mContext, mMapView.getOverlays(), default_color);
+        MapViewPathOverlayProxy pop = new MapViewPathOverlayProxyOSM(mContext, mMapView.getOverlays(), default_color, 5);
         mPathOverlayList.add(pop);
         return pop;
     }

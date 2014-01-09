@@ -21,7 +21,20 @@ public class RoutesRender {
     }
     int getRouteColor(TransportRoute route)
     {
+        switch(route.getId() % 8) {
+            case 0: return Color.BLUE;
+            case 1: return Color.CYAN;
+            case 2: return Color.GREEN;
+            case 3: return Color.MAGENTA;
+            case 4: return Color.LTGRAY;
+            case 5: return Color.RED;
+            case 6: return Color.YELLOW;
+            case 7: return Color.DKGRAY;
+
+
+        }
         return Color.BLUE;
+
 
     }
     public void showRoute(TransportRoute route, Boolean visiable){

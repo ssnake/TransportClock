@@ -18,8 +18,12 @@ public class MapViewPathOverlayProxyOSM extends MapViewPathOverlayProxy {
     PathOverlay mPathOverlay;
 
 
+    public MapViewPathOverlayProxyOSM(Context context, List<Overlay> listOverlay, int default_color, int line_width) {
+        this(context, listOverlay, default_color);
+        mPathOverlay.getPaint().setStrokeWidth(line_width);
+    }
 
-    public MapViewPathOverlayProxyOSM(Context context, List<Overlay> listOverlay, int default_color) {
+        public MapViewPathOverlayProxyOSM(Context context, List<Overlay> listOverlay, int default_color) {
         this.mListOverlay = listOverlay;
         this.mPathOverlay = new PathOverlay(default_color, context);
         this.mListOverlay.add(mPathOverlay);

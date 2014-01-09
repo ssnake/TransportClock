@@ -10,6 +10,7 @@ import android.app.*;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -137,8 +138,15 @@ public class MainActivity extends FragmentActivity {
         public void onChooseRouteClick(View view)
         {
             //Toast.makeText(this.getActivity(),"click", Toast.LENGTH_SHORT).show();
+
+
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int maxWidth = displaymetrics.widthPixels;
             ListPopupWindow pop = new ListPopupWindow(this.getActivity());
             pop.setAnchorView(view);
+
+            pop.setWidth(maxWidth);
 
             pop.setAdapter(new RouteListAdapter(this.getActivity(), mRouteList, mSettings, mRouteSelectedListiner));
             pop.show();
