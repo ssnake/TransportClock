@@ -61,5 +61,6 @@ public class RoutesRender {
             mRouteOverlayMap.remove(route);
 
         }
+        mMapViewProxy.refresh();
     }
 }

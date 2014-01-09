@@ -66,7 +66,7 @@ public class MainActivity extends FragmentActivity {
         RouteSelectedListener mRouteSelectedListiner;
         UISettings mSettings;
         RoutesRender mRouteRender;
-
+        ListPopupWindow mPopupRouteWindow;
 
 
         void addRouteToMap(TransportRoute route)
@@ -114,6 +114,8 @@ public class MainActivity extends FragmentActivity {
             mRouteRender = new RoutesRender(mvProxy);
             mRouteSelectedListiner = new RouteSelectedListener(mSettings, mRouteRender);
 
+            mPopupRouteWindow = new ListPopupWindow(this.getActivity());
+            mPopupRouteWindow.setAnchorView(mapView.findViewById(R.id.btnChooseRoutes));
 
 
             MapViewMarksOverlayProxy marks = mvProxy.addMarksOverlay(R.drawable.ic_launcher);
@@ -143,13 +145,12 @@ public class MainActivity extends FragmentActivity {
             DisplayMetrics displaymetrics = new DisplayMetrics();
             this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
             int maxWidth = displaymetrics.widthPixels;
-            ListPopupWindow pop = new ListPopupWindow(this.getActivity());
-            pop.setAnchorView(view);
 
-            pop.setWidth(maxWidth);
 
-            pop.setAdapter(new RouteListAdapter(this.getActivity(), mRouteList, mSettings, mRouteSelectedListiner));
-            pop.show();
+            mPopupRouteWindow.setWidth(maxWidth);
+            mPopupRouteWindow.setAdapter(new RouteListAdapter(this.getActivity(), mRouteList, mSettings, mRouteSelectedListiner));
+            mPopupRouteWindow.show();
+            mPopupRouteWindow.getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
 
         @Override
@@ -160,10 +161,15 @@ public class MainActivity extends FragmentActivity {
                     break;
             }
         }
+
+
         class RouteSelectedListener implements View.OnClickListener
         {
             UISettings mSettings;
             RoutesRender mRouteRender;
+            View mCheckedView = null;
+
+
             RouteSelectedListener(UISettings settings, RoutesRender render) {
                 mSettings = settings;
                 mRouteRender = render;
@@ -171,13 +177,24 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onClick(View v) {
-                CheckBox cb = (CheckBox) v;
+                RadioButton rb = (RadioButton) v;
+                if (mCheckedView != null && mCheckedView != v) {
+                    ((RadioButton) mCheckedView).setChecked(false);
+                    TransportRoute r = (TransportRoute) mCheckedView.getTag();
+                    mSettings.setVisiable(r, false);
+                    mRouteRender.showRoute(r, false);
+                }
+                mCheckedView = v;
                 TransportRoute r = (TransportRoute) v.getTag();
-                mSettings.setVisiable(r, cb.isChecked());
-                mRouteRender.showRoute(r, cb.isChecked());
+                mSettings.setVisiable(r, rb.isChecked());
+                mRouteRender.showRoute(r, rb.isChecked());
+
+                mPopupRouteWindow.dismiss();
 
 
             }
+
+
         }
         class UISettingsObserver implements Observer{
             MapFragment mMapFragmen;

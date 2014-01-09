@@ -45,6 +45,11 @@ public class MapViewProxyOSM extends MapViewProxy {
     }
 
     @Override
+    public void refresh() {
+        mMapView.postInvalidate();
+    }
+
+    @Override
     public void setBuiltInZoomControls(Boolean enable) {
         mMapView.setBuiltInZoomControls(enable);
     }

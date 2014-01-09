@@ -4,10 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.TextView;
+import android.widget.*;
 import com.transportclock.TransportRoute;
 
 import java.util.List;
@@ -39,7 +36,7 @@ public class RouteListAdapter extends ArrayAdapter<TransportRoute> {
             LayoutInflater inflater = LayoutInflater.from(this.getContext());
             rowView = View.inflate(this.getContext(), R.layout.route_row, null);
             holder = new ViewHolder();
-            holder.routeName = (CheckBox) rowView.findViewById(R.id.checkBox);
+            holder.routeName = (RadioButton) rowView.findViewById(R.id.radioButton);
             holder.routeName.setOnClickListener(mClickListener);
             rowView.setTag(holder);
         } else
@@ -50,7 +47,8 @@ public class RouteListAdapter extends ArrayAdapter<TransportRoute> {
         holder.routeName.setTag(route);
         return rowView;
     }
+
     static class ViewHolder{
-        public CheckBox routeName;
+        public RadioButton routeName;
     }
 }

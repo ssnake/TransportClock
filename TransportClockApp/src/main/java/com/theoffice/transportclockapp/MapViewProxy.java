@@ -15,4 +15,6 @@ public abstract class MapViewProxy {
     public abstract void setCenter(GeoPoint point);
 
     public abstract void delPathOverlay(MapViewPathOverlayProxy pathOverlay);
+
+    public abstract void refresh();
 }
