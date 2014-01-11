@@ -37,6 +37,11 @@ public class CarGPSImporter {
     }
     public static void load(String json, List<TransportCar> carList) {
         JSONObject jo = new JSONObject(json);
+        load(jo, carList);
+
+    }
+
+    public static void load(JSONObject jo, List<TransportCar> carList) {
         JSONArray ja = jo.optJSONArray(rowsField);
         for(int i=0; i<ja.length(); i++)
         {

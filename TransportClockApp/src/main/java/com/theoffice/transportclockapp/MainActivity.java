@@ -1,6 +1,5 @@
 package com.theoffice.transportclockapp;
 
-import java.io.*;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -18,8 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.*;
-import com.transportclock.RouteGPSImporter;
 import com.transportclock.RoutePoint;
+import com.transportclock.TransportClient;
 import com.transportclock.TransportRoute;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;

@@ -2,6 +2,8 @@ package com.theoffice.transportclockapp;
 
 import android.content.Context;
 import com.transportclock.RouteGPSImporter;
+import com.transportclock.TransportCar;
+import com.transportclock.TransportClient;
 import com.transportclock.TransportRoute;
 
 import java.io.*;
@@ -47,5 +49,10 @@ public class TransportClientLocal extends TransportClient {
     public void loadAllRoutes(List<TransportRoute> routeList) {
         RouteGPSImporter.loadRoutes(readRawJSON(R.raw.all_routes), routeList);
         RouteGPSImporter.loadNames(readRawJSON(R.raw.route_names), routeList);
+    }
+
+    @Override
+    public void loadAllCars(int route_id, List<TransportCar> carList) {
+
     }
 }
