@@ -1,10 +1,9 @@
 import com.transportclock.RouteGPSImporter;
 import com.transportclock.TransportRoute;
 import com.transportclock.TransportRouteList;
+import com.transportclock.UnitTestHelper;
 import junit.framework.TestCase;
 
-import org.apache.commons.io.IOUtils;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,25 +15,14 @@ public class RouteGPSImporterTest extends TestCase {
     String allNames;
     List<TransportRoute> listRoute;
 
-    private String resource2String(String res_name) {
-        InputStream is = this.getClass().getResourceAsStream(res_name);
-        StringWriter w = new StringWriter();
-        String ret = "";
-        try {
-            IOUtils.copy(is, w);
-            ret = w.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ret;
-    }
+
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
-        allRoutes = resource2String("all_routes.json");
-        allNames = resource2String("route_names.json");
+        allRoutes = UnitTestHelper.resource2String(this, "all_routes.json");
+        allNames = UnitTestHelper.resource2String(this, "route_names.json");
         listRoute = new ArrayList<TransportRoute>();
     }
 

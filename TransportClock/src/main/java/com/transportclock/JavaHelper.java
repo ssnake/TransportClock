@@ -1,5 +1,7 @@
 package com.transportclock;
 
+import org.json.JSONObject;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -11,5 +13,17 @@ public  class JavaHelper {
             return Collections.binarySearch(array, key) >= 0;
 
    }
+    public static Float optFloat(String key, JSONObject jo) {
+        return ((Double) jo.optDouble(key)).floatValue();
+    }
+    public static Float getAngle(RoutePoint p1, RoutePoint p2) {
+       Double angle = Math.atan((p2.getLng() - p1.getLng()) / (p2.getLat() - p1.getLat()));
+       angle = Math.atan2(p2.getLng() - p1.getLng(), p2.getLat() - p1.getLat());
+       angle = Math.toDegrees(angle);
+       if(angle < 0) {
+            angle += 360;
+       }
+       return angle.floatValue();
+    }
 
 }
