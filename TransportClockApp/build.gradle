@@ -16,6 +16,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 19
+        testPackageName "com.theoffice.transportclock.test"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
 }
 dependencies {
