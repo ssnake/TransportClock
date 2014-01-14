@@ -21,7 +21,7 @@ public class TransPortClientSumyTest extends TestCase {
 
     public void testLoadAllCars() {
         List<TransportCar> carList = new ArrayList<TransportCar>();
-        client.loadAllCars(0, carList);
+        client.loadRouteCars(0, carList);
         assert (carList.size() > 0);
 
     }

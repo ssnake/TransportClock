@@ -8,5 +8,5 @@ import java.util.List;
 public abstract class TransportClient {
     public abstract void loadAllRoutes(List<TransportRoute> routeList);
 
-    public abstract void loadAllCars(int route_id, List<TransportCar> carList);
+    public abstract void loadRouteCars(int route_id, List<TransportCar> carList);
 }

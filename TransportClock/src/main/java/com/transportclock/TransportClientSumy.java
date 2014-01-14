@@ -24,7 +24,7 @@ public class TransportClientSumy extends TransportClient {
     }
 
     @Override
-    public void loadAllCars(int route_id, List<TransportCar> carList) {
+    public void loadRouteCars(int route_id, List<TransportCar> carList) {
         params.clear();
         params.put(actParam, getCarsParam);
         params.put(routeIDParam, ((Integer) route_id).toString());

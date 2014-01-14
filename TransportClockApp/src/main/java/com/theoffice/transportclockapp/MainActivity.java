@@ -1,9 +1,6 @@
 package com.theoffice.transportclockapp;
 
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Vector;
+import java.util.*;
 
 import android.app.*;
 import android.graphics.Color;
@@ -57,7 +54,7 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    public class MapFragment extends Fragment implements  View.OnClickListener{
+    public class MapFragment extends Fragment implements  View.OnClickListener, AsyncClientTask.TaskUpdateListener{
         MapView mMapView;
         MapViewProxy mvProxy;
         TransportClient mClient;
@@ -66,39 +63,6 @@ public class MainActivity extends FragmentActivity {
         UISettings mSettings;
         RoutesRender mRouteRender;
         ListPopupWindow mPopupRouteWindow;
-
-
-        void addRouteToMap(TransportRoute route)
-        {
-            MapViewMarksOverlayProxy route_overlay = mvProxy.addMarksOverlay(R.drawable.ic_launcher);
-            MapViewPathOverlayProxy route_overlay2 = mvProxy.addPathOverlay(Color.RED);
-            for(RoutePoint p: route)
-            {
-                route_overlay2.addPoint(new GeoPoint(p.getLat(), p.getLng()));
-            }
-
-        }
-        void loadRoutes()
-        {
-            mClient.loadAllRoutes(mRouteList);
-
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            mClient = new TransportClientLocal(this.getActivity());
-            mRouteList = new Vector<TransportRoute>();
-
-            mSettings = new UISettings(new UISettingsObserver(this));
-
-            loadRoutes();
-        }
-
-        void bindUI(View root){
-            Button b = (Button) root.findViewById(R.id.btnChooseRoutes);
-            b.setOnClickListener(this);
-        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -136,6 +100,40 @@ public class MainActivity extends FragmentActivity {
             //lw.setAdapter(new RouteListAdapter(this.getActivity(), 0,mRouteList));
             return mapView;
         }
+
+        void addRouteToMap(TransportRoute route)
+        {
+            MapViewMarksOverlayProxy route_overlay = mvProxy.addMarksOverlay(R.drawable.ic_launcher);
+            MapViewPathOverlayProxy route_overlay2 = mvProxy.addPathOverlay(Color.RED);
+            for(RoutePoint p: route)
+            {
+                route_overlay2.addPoint(new GeoPoint(p.getLat(), p.getLng()));
+            }
+
+        }
+        void loadRoutes()
+        {
+            new AsyncClientTask(this).execute(ClientTask.LoadAllRoutes(mClient));
+
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            mClient = new TransportClientLocal(this.getActivity());
+            mRouteList = new Vector<TransportRoute>();
+
+            mSettings = new UISettings(new UISettingsObserver(this));
+
+            loadRoutes();
+        }
+
+        void bindUI(View root){
+            Button b = (Button) root.findViewById(R.id.btnChooseRoutes);
+            b.setOnClickListener(this);
+        }
+
+
         public void onChooseRouteClick(View view)
         {
             //Toast.makeText(this.getActivity(),"click", Toast.LENGTH_SHORT).show();
@@ -159,6 +157,13 @@ public class MainActivity extends FragmentActivity {
                     onChooseRouteClick(v);
                     break;
             }
+        }
+
+
+        @Override
+        public void onTaskUpdate(ClientTask task) {
+            ClientTask.GetTaskRouteList(task, mRouteList);
+
         }
 
 
