@@ -25,5 +25,8 @@ public  class JavaHelper {
        }
        return angle.floatValue();
     }
+    public static float double2float(double d) {
+        return ((Double) d).floatValue();
+    }
 
 }

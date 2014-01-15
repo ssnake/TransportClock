@@ -8,23 +8,11 @@ import org.osmdroid.views.overlay.OverlayItem;
  */
 public abstract class MapViewMarksOverlayProxy {
     public interface OnMarkClickListiner {
-        void onClick(OverlayItem item);
+        void onClick(MapViewOverlayItemProxy item);
     }
 
-    public abstract void addPoint(GeoPoint point, String title, String desc);
+    public abstract MapViewOverlayItemProxy addItem(GeoPoint point, String title, String desc);
+    public abstract void removeItem(MapViewOverlayItemProxy item);
     public abstract void setOnMarkClickListiner(OnMarkClickListiner listiner);
 
-    public class MapViewMarksOverlayProxyBasic extends MapViewMarksOverlayProxy {
-        protected OnMarkClickListiner listiner;
-        @Override
-        public void setOnMarkClickListiner(OnMarkClickListiner listiner) {
-            this.listiner = listiner;
-        }
-
-        @Override
-        public void addPoint(GeoPoint point, String title, String desc) {
-
-        }
-
-    }
 }

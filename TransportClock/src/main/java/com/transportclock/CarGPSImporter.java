@@ -17,6 +17,7 @@ public class CarGPSImporter {
     static final String prevLngField = "pY";
     static final String speedField = "SpeedV";
     static final String rowsField = "rows";
+    static final String avaibleField = "inzone";
     public static TransportCar JSON2Car(JSONObject jo) {
         TransportCar car = new TransportCar();
         Float pLat = JavaHelper.optFloat(prevLatField, jo);
@@ -24,6 +25,7 @@ public class CarGPSImporter {
         Float lat = JavaHelper.optFloat(latField, jo);
         Float lng = JavaHelper.optFloat(lngField, jo);
         Float angle = JavaHelper.getAngle(new RoutePoint(pLat, pLng), new RoutePoint(lat, lng));
+        car.setAvaible(jo.optString(avaibleField, "f").compareToIgnoreCase("t") ==0 );
 
         car.setId(jo.optInt(idField));
         car.setLat(lat);

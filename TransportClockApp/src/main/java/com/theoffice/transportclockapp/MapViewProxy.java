@@ -1,5 +1,6 @@
 package com.theoffice.transportclockapp;
 
+import android.content.Context;
 import org.osmdroid.util.GeoPoint;
 
 /**
@@ -17,4 +18,5 @@ public abstract class MapViewProxy {
     public abstract void delPathOverlay(MapViewPathOverlayProxy pathOverlay);
 
     public abstract void refresh();
+    public abstract Context getContext();
 }

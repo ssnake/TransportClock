@@ -9,6 +9,7 @@ import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -20,20 +21,36 @@ public class MapViewMarksOverlayProxyOSM extends MapViewMarksOverlayProxy {
     protected List<Overlay> mListOverlay;
     MarksOverlay marksOverlay;
     OnMarkClickListiner listiner;
+    HashMap<MapViewOverlayItemProxy, OverlayItem> mMapProxyToOverlayItemList;
 
     public MapViewMarksOverlayProxyOSM(Drawable drawable, MapView mapView) {
         this.mMapView = mapView;
         this.mListOverlay = mapView.getOverlays();
         this.marksOverlay = new MarksOverlay(drawable, mapView, this);
+        mMapProxyToOverlayItemList = new HashMap<MapViewOverlayItemProxy, OverlayItem>();
         mListOverlay.add(marksOverlay);
 
 
     }
 
     @Override
-    public void addPoint(GeoPoint point, String title, String desc) {
-        marksOverlay.addItem( new OverlayItem(title, desc, point));
+    public MapViewOverlayItemProxy addItem(GeoPoint point, String title, String desc) {
+        OverlayItem item = new OverlayItem(title, desc, point);
+        MapViewOverlayItemProxy ret = new MapViewOverlayItemProxyOSM(item);
+        mMapProxyToOverlayItemList.put(ret, item);
+        marksOverlay.addItem(item, ret);
 
+        return ret;
+
+
+    }
+    @Override
+    public void removeItem(MapViewOverlayItemProxy item) {
+        OverlayItem i = mMapProxyToOverlayItemList.get(item);
+        if (i != null) {
+            marksOverlay.removeItem(i, item);
+            mMapProxyToOverlayItemList.remove(item);
+        }
 
     }
     @Override
@@ -43,8 +60,12 @@ public class MapViewMarksOverlayProxyOSM extends MapViewMarksOverlayProxy {
 
     public class MarksOverlay extends ItemizedOverlay<OverlayItem> {
         private Vector<OverlayItem> itemList = new Vector<OverlayItem>();
+        private Vector<MapViewOverlayItemProxy> proxyItemList = new Vector<MapViewOverlayItemProxy>();
         private MapView mapView;
         private MapViewMarksOverlayProxyOSM overlayProxy;
+
+
+
         // constructor
         public MarksOverlay(Drawable drawable, MapView mapView, MapViewMarksOverlayProxyOSM overlayProxy){
             super(drawable, mapView.getResourceProxy());
@@ -63,9 +84,16 @@ public class MapViewMarksOverlayProxyOSM extends MapViewMarksOverlayProxy {
 
 
         }
-        public void addItem(OverlayItem item)
+        public void removeItem(OverlayItem item, MapViewOverlayItemProxy proxyItem) {
+
+            itemList.remove(item);
+            proxyItemList.remove(proxyItem);
+        }
+        public void addItem(OverlayItem item, MapViewOverlayItemProxy proxyItem)
         {
+
             itemList.add(item);
+            proxyItemList.add(proxyItem);
 
             populate();
         }
@@ -83,7 +111,9 @@ public class MapViewMarksOverlayProxyOSM extends MapViewMarksOverlayProxy {
         @Override
         protected boolean onTap(int index) {
             OverlayItem item = itemList.get(index);
-            overlayProxy.listiner.onClick(item);
+            MapViewOverlayItemProxy proxyItem = proxyItemList.get(index);
+
+            overlayProxy.listiner.onClick(proxyItem);
             return true;
         }
 

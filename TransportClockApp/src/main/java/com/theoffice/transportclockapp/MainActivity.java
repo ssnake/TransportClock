@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import android.widget.*;
 import com.transportclock.RoutePoint;
+import com.transportclock.TransportCar;
 import com.transportclock.TransportClient;
 import com.transportclock.TransportRoute;
 import org.osmdroid.util.GeoPoint;
@@ -22,7 +23,9 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.OverlayItem;
 
 public class MainActivity extends FragmentActivity {
-
+    public interface OnRouteSelectedListiner {
+        public void onRouteSelected(TransportRoute route, boolean isVisiable);
+    }
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,15 +57,17 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    public class MapFragment extends Fragment implements  View.OnClickListener, AsyncClientTask.TaskUpdateListener{
+    public class MapFragment extends Fragment implements  View.OnClickListener, AsyncClientTask.TaskUpdateListener, OnRouteSelectedListiner{
         MapView mMapView;
         MapViewProxy mvProxy;
         TransportClient mClient;
         List<TransportRoute> mRouteList;
+        List<TransportCar> mCarList;
         RouteSelectedListener mRouteSelectedListiner;
         UISettings mSettings;
         RoutesRender mRouteRender;
         ListPopupWindow mPopupRouteWindow;
+        CarsRender mCarRender;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,23 +80,12 @@ public class MainActivity extends FragmentActivity {
             mvProxy.setZoom(15);
 
             mRouteRender = new RoutesRender(mvProxy);
-            mRouteSelectedListiner = new RouteSelectedListener(mSettings, mRouteRender);
+            mCarRender = new CarsRender(mvProxy);
+            mRouteSelectedListiner = new RouteSelectedListener(this);
 
             mPopupRouteWindow = new ListPopupWindow(this.getActivity());
             mPopupRouteWindow.setAnchorView(mapView.findViewById(R.id.btnChooseRoutes));
 
-
-            MapViewMarksOverlayProxy marks = mvProxy.addMarksOverlay(R.drawable.ic_launcher);
-            marks.setOnMarkClickListiner(new MapViewMarksOverlayProxy.OnMarkClickListiner() {
-                @Override
-                public void onClick(OverlayItem item) {
-                    AlertDialog.Builder dlg = new AlertDialog.Builder(getActivity());
-                    dlg.setTitle(item.getTitle());
-                    dlg.setMessage(item.getSnippet());
-                    dlg.show();
-
-                }
-            });
 
             mvProxy.setCenter(new GeoPoint(50.90633, 34.81854));
 
@@ -122,6 +116,7 @@ public class MainActivity extends FragmentActivity {
             super.onCreate(savedInstanceState);
             mClient = new TransportClientLocal(this.getActivity());
             mRouteList = new Vector<TransportRoute>();
+            mCarList = new Vector<TransportCar>();
 
             mSettings = new UISettings(new UISettingsObserver(this));
 
@@ -163,20 +158,35 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void onTaskUpdate(ClientTask task) {
             ClientTask.GetTaskRouteList(task, mRouteList);
+            if (task instanceof ClientTask.LoadRouteCars) {
+              mCarList.clear();
+              ClientTask.GetTaskCarList(task, mCarList);
+              mCarRender.clear();
+              mCarRender.showCars(mCarList);
+            }
+
+        }
+
+        @Override
+        public void onRouteSelected(TransportRoute route, boolean isVisiable) {
+            mSettings.setVisiable(route, isVisiable);
+            mRouteRender.showRoute(route, isVisiable);
+            if (isVisiable)
+                new AsyncClientTask(this).execute(ClientTask.LoadRouteCars(mClient, route.getId()));
 
         }
 
 
         class RouteSelectedListener implements View.OnClickListener
         {
-            UISettings mSettings;
-            RoutesRender mRouteRender;
+            OnRouteSelectedListiner mListiner;
+
             View mCheckedView = null;
 
 
-            RouteSelectedListener(UISettings settings, RoutesRender render) {
-                mSettings = settings;
-                mRouteRender = render;
+            RouteSelectedListener(OnRouteSelectedListiner listener) {
+                mListiner = listener;
+
             }
 
             @Override
@@ -185,13 +195,13 @@ public class MainActivity extends FragmentActivity {
                 if (mCheckedView != null && mCheckedView != v) {
                     ((RadioButton) mCheckedView).setChecked(false);
                     TransportRoute r = (TransportRoute) mCheckedView.getTag();
-                    mSettings.setVisiable(r, false);
-                    mRouteRender.showRoute(r, false);
+                    mListiner.onRouteSelected(r, false);
+
                 }
                 mCheckedView = v;
                 TransportRoute r = (TransportRoute) v.getTag();
-                mSettings.setVisiable(r, rb.isChecked());
-                mRouteRender.showRoute(r, rb.isChecked());
+
+                mListiner.onRouteSelected(r, rb.isChecked());
 
                 mPopupRouteWindow.dismiss();
 

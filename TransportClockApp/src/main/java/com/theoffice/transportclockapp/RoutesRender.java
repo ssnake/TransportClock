@@ -15,6 +15,7 @@ import java.util.HashMap;
 public class RoutesRender {
     MapViewProxy mMapViewProxy;
     HashMap<TransportRoute, MapViewPathOverlayProxy> mRouteOverlayMap;
+
     public RoutesRender(MapViewProxy mapViewProxy) {
         mMapViewProxy = mapViewProxy;
         mRouteOverlayMap = new HashMap<TransportRoute, MapViewPathOverlayProxy>();

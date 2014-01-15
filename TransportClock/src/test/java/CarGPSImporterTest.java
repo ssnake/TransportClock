@@ -26,6 +26,8 @@ public class CarGPSImporterTest extends TestCase{
         assertEquals("39-23", car.getName());
         assertEquals(25458, car.getId());
         assertEquals(3.0f, car.getSpeed());
+        assertTrue(false == car.getAvaible());
+        assertTrue(carList.get(1).getAvaible());
 
     }
 

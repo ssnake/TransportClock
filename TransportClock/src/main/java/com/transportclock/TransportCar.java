@@ -5,11 +5,29 @@ package com.transportclock;
  */
 public class TransportCar {
     int id;
+    int route_id;
     String name;
     Float speed;
     Float lat;
     Float lng;
     Float angle;
+    Boolean avaible;
+
+    public Boolean getAvaible() {
+        return avaible;
+    }
+
+    public void setAvaible(Boolean avaible) {
+        this.avaible = avaible;
+    }
+
+    public int getRoute_id() {
+        return route_id;
+    }
+
+    public void setRoute_id(int route_id) {
+        this.route_id = route_id;
+    }
 
     public int getId() {
         return id;
@@ -57,5 +75,9 @@ public class TransportCar {
 
     public void setAngle(Float angle) {
         this.angle = angle;
+    }
+
+    public String toRaw() {
+        return String.format("id=%d\nroute_id=%d\nname=%s\nspeed=%f\nangle=%f\navaible=%s", id, route_id, name, speed, angle, avaible.toString());
     }
 }

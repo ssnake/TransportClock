@@ -50,6 +50,11 @@ public class MapViewProxyOSM extends MapViewProxy {
     }
 
     @Override
+    public Context getContext() {
+        return mContext;
+    }
+
+    @Override
     public void setBuiltInZoomControls(Boolean enable) {
         mMapView.setBuiltInZoomControls(enable);
     }
