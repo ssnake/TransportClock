@@ -15,9 +15,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Routes"
-            android:id="@+id/btnChooseRoutes" android:layout_gravity="center_horizontal" android:layout_alignParentEnd="false"
+            android:id="@+id/btnChooseRoutes" android:layout_gravity="center_horizontal"
             android:clickable="true"
-            android:enabled="true" android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"/>
+            android:enabled="true"
+            android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
 
 </RelativeLayout>

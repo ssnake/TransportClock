@@ -19,4 +19,5 @@ public abstract class MapViewProxy {
 
     public abstract void refresh();
     public abstract Context getContext();
+    public abstract void setScrollableAreaLimit();
 }

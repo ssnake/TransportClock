@@ -28,7 +28,7 @@ public class CarsRender implements MapViewMarksOverlayProxy.OnMarkClickListiner 
         mCarOverlay = mMapViewProxy.addMarksOverlay(R.drawable.ic_launcher);
         mCarOverlay.setOnMarkClickListiner(this);
     }
-    public void showCar(TransportCar car) {
+    private void showCar(TransportCar car) {
         MapViewOverlayItemProxy item = mCarMarkList.get(getCarID(car));
         if (item == null) {
            item = mCarOverlay.addItem(
@@ -53,7 +53,7 @@ public class CarsRender implements MapViewMarksOverlayProxy.OnMarkClickListiner 
     public void showCars(List<TransportCar> carList) {
         for (TransportCar car : carList)
             showCar(car);
-
+        mMapViewProxy.refresh();
     }
 
     @Override
