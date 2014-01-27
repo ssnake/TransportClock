@@ -1,5 +1,6 @@
 package com.transportclock;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,19 +25,26 @@ public class JSONURLReader {
         }
         return sb.toString();
     }
-
-    public static JSONObject read(final String url) throws IOException, JSONException {
+    public static String read2String(final String url) throws IOException, JSONException {
         final InputStream is = new URL(url).openStream();
         try {
             final BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-            final String jsonText = readAll(rd);
-            final JSONObject json = new JSONObject(jsonText);
-            return json;
+            return readAll(rd);
+
 
         } finally {
             is.close();
         }
     }
+    public static JSONObject read2JO(final String url) throws IOException, JSONException {
+            return new JSONObject(read2String(url));
+
+    }
+    public static JSONArray read2JA(final String url) throws IOException, JSONException {
+        return new JSONArray(read2String(url));
+
+    }
+
 
     public static String encodeParams(final Map<String, String> params) {
         final String paramsUrl = Joiner.on('&').join(// получаем значение вида key1=value1&key2=value2...

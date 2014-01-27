@@ -1,6 +1,7 @@
 package com.transportclock;
 
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Vector;
 import org.json.JSONWriter;
 
@@ -9,15 +10,19 @@ import org.json.JSONWriter;
  * The class for Transport route
  */
 public class TransportRoute extends Vector<RoutePoint>{
-
+    private interface Block {
+        public void yield(RoutePoint p);
+    }
     int id;
     String name;
     Boolean direction;
     String number;
+    HashMap<String, String> other;
 
 
     public TransportRoute(String name) {
         setName(name);
+        other = new HashMap<String, String>();
     }
     public TransportRoute(){
         this("");
@@ -29,6 +34,9 @@ public class TransportRoute extends Vector<RoutePoint>{
         this.add(ret);
         return ret;
 
+    }
+    public void addOtherValue(String key, String value) {
+        other.put(key, value);
     }
 
     public Float getDistnace(int index1, int index2)
@@ -98,6 +106,36 @@ public class TransportRoute extends Vector<RoutePoint>{
 
         return sw.toString() ;
     }
+
+    public Float getMostSouthLat() {
+        Float ret = Float.MAX_VALUE;
+        for (RoutePoint p: this) {
+            ret = p.getLat() < ret ? p.getLat() : ret ;
+        }
+        return ret;
+    }
+    public Float getMostNortLat() {
+        Float ret = Float.MIN_VALUE;
+        for (RoutePoint p: this) {
+            ret = p.getLat() > ret ? p.getLat() : ret ;
+        }
+        return ret;
+    }
+    public Float getMostWestLng() {
+        Float ret = Float.MAX_VALUE;
+        for (RoutePoint p: this) {
+            ret = p.getLng() < ret ? p.getLng() : ret ;
+        }
+        return ret;
+    }
+
+    public Float getMostEastLng() {
+        Float ret = Float.MIN_VALUE;
+        for (RoutePoint p: this) {
+            ret = p.getLng() > ret ? p.getLng() : ret ;
+        }
+        return ret;
+    }
     //place for getters and setters
     public String getName() {
         return name;
@@ -131,4 +169,7 @@ public class TransportRoute extends Vector<RoutePoint>{
         this.number = number;
     }
 
+    public HashMap<String, String> getOther() {
+        return other;
+    }
 }

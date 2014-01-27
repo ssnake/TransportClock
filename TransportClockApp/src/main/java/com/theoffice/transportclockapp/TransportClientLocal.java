@@ -34,18 +34,10 @@ public class TransportClientLocal extends TransportClientSumy {
         return w.toString();
 
     }
-    TransportRoute addRoute()
-    {
-        //String json = readRawJSON(R.raw.route1);
-        //return RouteGPSImporter.load(json, false);
-        return null;
 
-
-    }
     @Override
-    public void loadAllRoutes(List<TransportRoute> routeList) {
-        RouteGPSImporter.loadRoutes(readRawJSON(R.raw.all_routes), routeList);
-        RouteGPSImporter.loadNames(readRawJSON(R.raw.route_names), routeList);
+    public void loadRouteNames(List<TransportRoute> routeList) {
+        RouteGPSImporter.loadRouteNames(readRawJSON(R.raw.route_names), routeList);
     }
 
 }

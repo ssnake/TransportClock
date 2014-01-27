@@ -1,10 +1,11 @@
 package com.theoffice.transportclockapp;
 
 import android.widget.Toast;
+import com.snake.mapviewproxy.MapViewMarksOverlayProxy;
+import com.snake.mapviewproxy.MapViewOverlayItemProxy;
+import com.snake.mapviewproxy.MapViewProxy;
 import com.transportclock.TransportCar;
-import com.transportclock.TransportRoute;
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.HashMap;
 import java.util.List;

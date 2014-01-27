@@ -1,7 +1,8 @@
-package com.theoffice.transportclockapp;
+package com.snake.mapviewproxy;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
@@ -18,6 +19,7 @@ public class MapViewProxyOSM extends MapViewProxy {
     CompassOverlay mCompOverlay;
     Vector<MapViewMarksOverlayProxy> mMarksOverlayList = new Vector<MapViewMarksOverlayProxy>();
     Vector<MapViewPathOverlayProxy> mPathOverlayList = new Vector<MapViewPathOverlayProxy>();
+    BoundingBoxE6 mAreaLimit;
 
     public MapViewProxyOSM(MapView mapView, Context context) {
         this.mMapView = mapView;
@@ -53,6 +55,21 @@ public class MapViewProxyOSM extends MapViewProxy {
     @Override
     public Context getContext() {
         return mContext;
+    }
+
+    @Override
+    public void setScrollableAreaLimit(BoundingBox area) {
+        mAreaLimit =
+                new BoundingBoxE6(
+                        area.getNorth(),
+                        area.getEast(),
+                        area.getSouth(),
+                        area.getWest()
+                );
+        mMapView.setScrollableAreaLimit(mAreaLimit);
+
+        mMapView.getController().animateTo(mAreaLimit.getCenter());
+
     }
 
     @Override

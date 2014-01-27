@@ -3,20 +3,18 @@ package com.theoffice.transportclockapp;
 import java.util.*;
 
 import android.app.*;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.*;
 
 import android.widget.*;
-import com.transportclock.RoutePoint;
+import com.snake.mapviewproxy.MapViewProxy;
+import com.snake.mapviewproxy.MapViewProxyOSM;
 import com.transportclock.TransportCar;
 import com.transportclock.TransportClient;
 import com.transportclock.TransportRoute;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.OverlayItem;
 
 public class MainActivity extends Activity implements  View.OnClickListener, AsyncClientTask.TaskUpdateListener, AppHelper.OnRouteSelectedListiner, Observer {
     MapView mMapView;
@@ -96,7 +94,7 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
 
     void loadRoutes() {
-            new AsyncClientTask(this).execute(ClientTask.LoadAllRoutes(mClient));
+            new AsyncClientTask(this).execute(ClientTask.MakeLoadRouteNames(mClient));
 
     }
 
@@ -142,7 +140,10 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
     @Override
     public void onTaskUpdate(ClientTask task) {
-        ClientTask.GetTaskRouteList(task, mRouteList);
+        if (task instanceof ClientTask.LoadRouteNames) {
+            ClientTask.GetTaskRouteList(task, mRouteList);
+
+        }
         if (task instanceof ClientTask.LoadRouteCars) {
           mCarList.clear();
           ClientTask.GetTaskCarList(task, mCarList);
@@ -156,8 +157,9 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
     public void onRouteSelected(TransportRoute route, boolean isVisiable) {
         mSettings.setVisiable(route, isVisiable);
         mRouteRender.showRoute(route, isVisiable);
+        mvProxy.setScrollableAreaLimit(MapViewProxy.BoundingBox.MakeBoundingBox(route));
         if (isVisiable)
-            new AsyncClientTask(this).execute(ClientTask.LoadRouteCars(mClient, route.getId()));
+            new AsyncClientTask(this).execute(ClientTask.MakeLoadRouteCars(mClient, route.getId()));
 
     }
 

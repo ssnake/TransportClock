@@ -1,4 +1,4 @@
-package com.theoffice.transportclockapp;
+package com.snake.mapviewproxy;
 
 import org.osmdroid.util.GeoPoint;
 

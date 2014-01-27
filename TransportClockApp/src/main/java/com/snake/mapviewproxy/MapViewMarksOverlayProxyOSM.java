@@ -1,4 +1,4 @@
-package com.theoffice.transportclockapp;
+package com.snake.mapviewproxy;
 
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;

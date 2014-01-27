@@ -1,6 +1,8 @@
 package com.theoffice.transportclockapp;
 
 import android.graphics.Color;
+import com.snake.mapviewproxy.MapViewPathOverlayProxy;
+import com.snake.mapviewproxy.MapViewProxy;
 import com.transportclock.RoutePoint;
 import com.transportclock.TransportRoute;
 import org.osmdroid.util.GeoPoint;

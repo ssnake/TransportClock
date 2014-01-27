@@ -40,7 +40,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     public void testAsyncLoadAllRoutes() throws InterruptedException {
         latch = new CountDownLatch(1);
         List<TransportRoute> routeList = new ArrayList<TransportRoute>();
-        ClientTask task = ClientTask.LoadAllRoutes(client);
+        ClientTask task = ClientTask.MakeLoadRouteNames(client);
         new AsyncClientTask(this).execute(task);
         latch.await();
         ClientTask.GetTaskRouteList(task, routeList);
@@ -52,7 +52,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     public void testAsyncLoadRouteCars() throws InterruptedException {
         latch = new CountDownLatch(1);
         List<TransportCar> carList = new ArrayList<TransportCar>();
-        ClientTask task = ClientTask.LoadRouteCars(client, 0);
+        ClientTask task = ClientTask.MakeLoadRouteCars(client, 0);
         new AsyncClientTask(this).execute(task);
         latch.await();
         ClientTask.GetTaskCarList(task, carList);

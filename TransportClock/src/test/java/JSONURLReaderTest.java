@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class JSONURLReaderTest extends TestCase {
     public void testMeria() throws IOException {
-        JSONObject json = JSONURLReader.read("http://gps.meria.sumy.ua/mash.php?act=cars&id=0");
+        JSONObject json = JSONURLReader.read2JO("http://gps.meria.sumy.ua/mash.php?act=cars&id=0");
         List<TransportCar> list = new ArrayList<TransportCar>();
         CarGPSImporter.load(json.toString(), list);
         assert (list.size() > 0);

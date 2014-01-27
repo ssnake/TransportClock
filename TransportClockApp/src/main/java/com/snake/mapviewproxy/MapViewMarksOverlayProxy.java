@@ -1,7 +1,6 @@
-package com.theoffice.transportclockapp;
+package com.snake.mapviewproxy;
 
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.overlay.OverlayItem;
 
 /**
  * Created by snake on 25.12.13.

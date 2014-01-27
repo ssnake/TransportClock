@@ -2,6 +2,7 @@ package com.transportclock;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.omg.CORBA.StringValueHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,8 @@ public class RouteGPSImporter {
         for(int i=0; i<ja.length(); i++)
         {
             JSONObject jo = ja.getJSONObject(i);
-            TransportRoute r = JSON2Route(jo);
+            TransportRoute r = new TransportRoute();
+            JSON2Route(jo, r);
             if (!JavaHelper.listContainsInt(retList, r.getId()))
                 retList.add(r.getId());
 
@@ -48,82 +50,77 @@ public class RouteGPSImporter {
     }
 
 
-    private static TransportRoute JSON2Route(JSONObject jo) {
-        TransportRoute route = new TransportRoute();
-        int id = -1;
-        Boolean dir = false;
-        String name = "";
-        String number = "";
+    private static void JSON2Route(JSONObject jo,  TransportRoute route) {
 
         if (jo.has(idField))
-            id = jo.getInt(idField);
+            route.setId(jo.getInt(idField));
         if (jo.has(directionField))
-            dir = jo.getString(directionField).compareToIgnoreCase("t")==0;
+            route.setDirection(jo.getString(directionField).compareToIgnoreCase("t")==0);
         if (jo.has(nameField))
-            name = jo.getString(nameField);
+            route.setName(jo.getString(nameField));
         if (jo.has(numberField))
-            number = jo.getString(numberField);
-
-        route.setId(id);
-        route.setDirection(dir);
-        route.setName(name);
-        route.setNumber(number);
+            route.setNumber(jo.getString(numberField));
 
 
-        return route;
+
+
     }
 
-    public static TransportRoute load(String json, Boolean direction)
-    {
 
-        TransportRoute r = new TransportRoute();
-
-        JSONArray ja = new JSONArray(json);
-
-        for(int i=0; i<ja.length(); i++)
-        {
-            JSONObject jo = ja.getJSONObject(i);
-            if (jo.getString(directionField).compareToIgnoreCase("t")==0 && direction ||
-                jo.getString(directionField).compareToIgnoreCase("f")==0 && !direction )
-                r.add(JSON2Point(jo));
+    private static TransportRoute findByID_Route(String id_route, List<TransportRoute> routeList) {
+        for (TransportRoute r : routeList) {
+            if (!getID_Route(r).isEmpty() && getID_Route(r).compareToIgnoreCase(id_route) == 0)
+                return r;
         }
-        return r;
-
+        return null;
     }
 
-    public static void loadRoutes(String json, List<TransportRoute> routeList) {
+    public static void loadRoutePoints(String json, TransportRoute route) {
         JSONArray ja = new JSONArray(json);
-
-        for(int i=0; i<ja.length(); i++)
-        {
-            JSONObject jo = ja.getJSONObject(i);
-            TransportRoute route = JSON2Route(jo);
-            //check if it 's already present in list
-
-            TransportRoute existed_route = TransportRouteList.findByID(route.getId(), routeList);
-            if (existed_route != null)
-                route = existed_route;
-            else
-               routeList.add(route);
-
-            route.add(JSON2Point(jo));
-        }
+        loadRoutePoints(ja, route);
 
     }
-
-    public static void loadNames(String json, List<TransportRoute> routeList) {
+    public static void loadRoutePoints(JSONArray array, TransportRoute route) {
+        for (int i= 0; i< array.length(); i++) {
+            route.add(JSON2Point(array.getJSONObject(i)));
+        }
+    }
+    public static void loadRouteNames(String json, List<TransportRoute> routeList) {
         JSONArray ja = new JSONArray(json);
         for (int i = 0; i < ja.length(); i++) {
             JSONObject jo = ja.getJSONObject(i);
-            TransportRoute route = JSON2Route(jo);
+
+            TransportRoute route = new TransportRoute();
+            JSON2Route(jo, route);
+
             TransportRoute existed_route = TransportRouteList.findByID(route.getId(), routeList);
+            TransportRoute targetRoute;
             if (existed_route != null) {
-                existed_route.setName(route.getName());
-                existed_route.setNumber(route.getNumber());
+                targetRoute = existed_route;
+            } else{
+                targetRoute = route;
+                routeList.add(targetRoute);
             }
+            targetRoute.setName(route.getName());
+            targetRoute.setNumber(route.getNumber());
+
 
         }
 
+
+    }
+
+    public static String getID_Route(TransportRoute route) {
+        return route.getOther().getOrDefault(id_routeField, "");
+    }
+
+
+    public static void loadRouteDetails(JSONArray ja, TransportRoute route) {
+        for (int i = 0; i < ja.length(); i++) {
+            JSONObject jo = ja.getJSONObject(i);
+            route.addOtherValue(id_routeField, jo.optString(idField, "-1"));
+
+        }
 
     }
 }

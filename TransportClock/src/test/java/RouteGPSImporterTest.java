@@ -3,6 +3,7 @@ import com.transportclock.TransportRoute;
 import com.transportclock.TransportRouteList;
 import com.transportclock.UnitTestHelper;
 import junit.framework.TestCase;
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 public class RouteGPSImporterTest extends TestCase {
     String allRoutes;
     String allNames;
+    String route959;
     List<TransportRoute> listRoute;
 
 
@@ -23,44 +25,29 @@ public class RouteGPSImporterTest extends TestCase {
 
         allRoutes = UnitTestHelper.resource2String(this, "all_routes.json");
         allNames = UnitTestHelper.resource2String(this, "route_names.json");
+        route959 = UnitTestHelper.resource2String(this, "959_route.json");
         listRoute = new ArrayList<TransportRoute>();
-    }
-
-    public void testLoad()
-    {
-        final String s = "[{\"id_route\":\"824\",\"lat\":\"34.7408\",\"lng\":\"50.94468\",\"direction\":\"t\"},{\"id_route\":\"824\",\"lat\":\"34.75007\",\"lng\":\"50.94359\",\"direction\":\"t\"},"+
-                "{\"id_route\":\"824\",\"lat\":\"34.75457\",\"lng\":\"50.94297\",\"direction\":\"f\"},{\"id_route\":\"824\",\"lat\":\"34.75494\",\"lng\":\"50.94291\",\"direction\":\"f\"}]";
-        TransportRoute r = RouteGPSImporter.load(s, Boolean.TRUE);
-        assertEquals(2, r.size());
-        assertEquals(34.7408f, r.get(0).getLng(), 1.0f);
-        assertEquals(50.94468f, r.get(0).getLat(), 1.0f);
-        assertEquals(34.75007f, r.get(1).getLng(), 1.0f);
-        assertEquals(50.94359f, r.get(1).getLat(), 1.0f);
-        TransportRoute r2 = RouteGPSImporter.load(s, Boolean.FALSE);
-        assertEquals(2, r2.size());
-        assertEquals(34.7545f, r2.get(0).getLng(), 1.0f);
-        assertEquals(50.94297f, r2.get(0).getLat(), 1.0f);
-        assertEquals(34.75494f, r2.get(1).getLng(), 1.0f);
-        assertEquals(50.94291f, r2.get(1).getLat(), 1.0f);
 
     }
 
-    public void testLoadAllRoutes() {
-        RouteGPSImporter.loadRoutes(allRoutes, listRoute);
 
-        assertEquals(28, listRoute.size());
-    }
+
+
 
     public void testLoadAllNames() {
-        RouteGPSImporter.loadRoutes(allRoutes, listRoute);
-        RouteGPSImporter.loadNames(allNames, listRoute);
+        RouteGPSImporter.loadRouteNames(allNames, listRoute);
         TransportRoute r = TransportRouteList.findByID(0, listRoute);
         assertEquals("01 Роменська - Гамалiя", r.getName());
         assertEquals("01", r.getNumber());
 
 
     }
-
+    public void testLoadRoute() {
+        JSONArray ja = new JSONArray(route959);
+        TransportRoute r =new TransportRoute();
+        RouteGPSImporter.loadRoutePoints(ja, r);
+        assertTrue(r.size() > 0);
+    }
     public static void main(String args[])
     {
         junit.textui.TestRunner.run(RouteGPSImporterTest.class);
