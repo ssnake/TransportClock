@@ -16,7 +16,7 @@ import com.transportclock.TransportRoute;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
-public class MainActivity extends Activity implements  View.OnClickListener, AsyncClientTask.TaskUpdateListener, AppHelper.OnRouteSelectedListiner, Observer {
+public class MainActivity extends Activity implements  View.OnClickListener, AsyncClientTask.TaskUpdateListener, AppHelper.OnRouteSelectedListiner {
     MapView mMapView;
     MapViewProxy mvProxy;
     TransportClient mClient;
@@ -37,7 +37,7 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
         mRouteList = new Vector<TransportRoute>();
         mCarList = new Vector<TransportCar>();
 
-        mSettings = new UISettings(this);
+        mSettings = new UISettings();
 
         mMapView = (MapView) findViewById(R.id.mapview);
         mvProxy = new MapViewProxyOSM(mMapView, this);
@@ -136,7 +136,14 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
                 break;
         }
     }
+    private void showRoutePath(TransportRoute route, boolean isVisiable) {
+        mRouteRender.showRoute(route, isVisiable);
+        if (isVisiable) {
 
+            mvProxy.setScrollableAreaLimit(MapViewProxy.BoundingBox.MakeBoundingBox(route));
+            mvProxy.setZoom(13);
+        }
+    }
 
     @Override
     public void onTaskUpdate(ClientTask task) {
@@ -150,23 +157,31 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
           mCarRender.clear();
           mCarRender.showCars(mCarList);
         }
+        if (task instanceof ClientTask.LoadRouteDetails) {
+            new AsyncClientTask(this).execute(ClientTask.MakeLoadRoutePath(mClient, task.mRoute));
+
+        }
+        if (task instanceof ClientTask.LoadRoutePath) {
+            showRoutePath(task.mRoute, true);
+
+
+        }
+
 
     }
 
     @Override
     public void onRouteSelected(TransportRoute route, boolean isVisiable) {
         mSettings.setVisiable(route, isVisiable);
-        mRouteRender.showRoute(route, isVisiable);
-        mvProxy.setScrollableAreaLimit(MapViewProxy.BoundingBox.MakeBoundingBox(route));
-        if (isVisiable)
+
+        if (isVisiable) {
+            new AsyncClientTask(this).execute(ClientTask.MakeLoadRouteDetails(mClient, route));
             new AsyncClientTask(this).execute(ClientTask.MakeLoadRouteCars(mClient, route.getId()));
-
+        } else
+            showRoutePath(route, isVisiable);
     }
 
-    @Override
-    public void update(Observable observable, Object data) {
 
-    }
 
 
     public class RouteSelectedListener implements View.OnClickListener

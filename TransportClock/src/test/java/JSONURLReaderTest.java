@@ -26,6 +26,6 @@ public class JSONURLReaderTest extends TestCase {
         Map<String, String> params = new HashMap<String, String>();
         params.put("a", "b");
         params.put("c", "d");
-        assertEquals("c=d&a=b", JSONURLReader.encodeParams(params));
+        assertTrue(JSONURLReader.encodeParams(params).equalsIgnoreCase("c=d&a=b") || JSONURLReader.encodeParams(params).equalsIgnoreCase("a=b&c=d"));
     }
 }

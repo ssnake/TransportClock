@@ -111,7 +111,8 @@ public class RouteGPSImporter {
     }
 
     public static String getID_Route(TransportRoute route) {
-        return route.getOther().getOrDefault(id_routeField, "");
+        return route.getOther().containsKey(id_routeField) ? route.getOther().get(id_routeField) : "";
+        //return route.getOther().getOrDefault(id_routeField, "");
     }
 
 

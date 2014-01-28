@@ -12,9 +12,11 @@ import java.util.List;
  */
 public abstract class ClientTask {
     TransportClient mClient;
+    TransportRoute mRoute;
 
-    protected ClientTask(TransportClient mClient) {
+    protected ClientTask(TransportClient mClient, TransportRoute route) {
         this.mClient = mClient;
+        this.mRoute = route;
     }
 
     public abstract void run();
@@ -27,6 +29,9 @@ public abstract class ClientTask {
     }
     public static ClientTask MakeLoadRouteDetails(TransportClient client, TransportRoute route) {
         return new LoadRouteDetails(client, route);
+    }
+    public static ClientTask MakeLoadRoutePath(TransportClient client, TransportRoute route) {
+        return new LoadRoutePath(client, route);
     }
     public static boolean GetTaskCarList(ClientTask task, List<TransportCar> carList) {
         boolean r = task instanceof LoadRouteCars;
@@ -54,7 +59,7 @@ public abstract class ClientTask {
         List<TransportCar> mCarList;
 
         public LoadRouteCars(TransportClient client, int route_id) {
-            super(client);
+            super(client, null);
             mCarList = new ArrayList<TransportCar>();
 
             mRoute_ID = route_id;
@@ -78,7 +83,7 @@ public abstract class ClientTask {
 
         List<TransportRoute> mRouteList;
         public LoadRouteNames(TransportClient client) {
-            super(client);
+            super(client, null);
             mRouteList = new ArrayList<TransportRoute>();
         }
 
@@ -92,11 +97,10 @@ public abstract class ClientTask {
         }
     }
     public static class LoadRouteDetails extends  ClientTask {
-        TransportRoute mRoute;
+
 
         protected LoadRouteDetails(TransportClient mClient, TransportRoute route) {
-            super(mClient);
-            mRoute = route;
+            super(mClient, route);
         }
 
         @Override
@@ -105,5 +109,16 @@ public abstract class ClientTask {
 
         }
     }
+    public static class LoadRoutePath extends  ClientTask {
 
+        protected LoadRoutePath(TransportClient mClient, TransportRoute route) {
+            super(mClient, route);
+        }
+
+        @Override
+        public void run() {
+            mClient.loadRoutePath(mRoute);
+
+        }
+    }
 }

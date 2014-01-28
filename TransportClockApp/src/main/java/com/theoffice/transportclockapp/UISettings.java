@@ -8,26 +8,19 @@ import java.util.*;
  * Created by snake on 12/29/13.
  */
 public class UISettings {
-    HashMap<TransportRoute, Boolean> routeVisiableList = new HashMap<TransportRoute, Boolean>();
-    Observer observer;
-    public UISettings(Observer observer) {
-        this.observer = observer;
-    }
+    HashMap<Integer, Boolean> routeVisiableList = new HashMap<Integer, Boolean>();
+
 
     public  Boolean IsVisiable(TransportRoute route)
     {
-        if (!routeVisiableList.containsKey(route))
+        if (!routeVisiableList.containsKey(route.getId()))
             return Boolean.FALSE;
         else
-            return routeVisiableList.get(route);
+            return routeVisiableList.get(route.getId());
 
     }
     public  void setVisiable(TransportRoute route, Boolean visiable){
-        if (IsVisiable(route) != visiable && observer != null)
-        {
-            observer.update(null, route);
-        }
-        routeVisiableList.put(route, visiable);
+        routeVisiableList.put(route.getId(), visiable);
 
     }
 

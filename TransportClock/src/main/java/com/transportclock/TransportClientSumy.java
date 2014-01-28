@@ -26,12 +26,12 @@ public class TransportClientSumy extends TransportClient {
 
     }
     @Override
-    public void loadRouteNames(List<TransportRoute> routeList) {
+    public synchronized void loadRouteNames(List<TransportRoute> routeList) {
 
     }
 
     @Override
-    public void loadRouteCars(int route_id, List<TransportCar> carList) {
+    public synchronized void loadRouteCars(int route_id, List<TransportCar> carList) {
         params.clear();
         params.put(actParam, getCarsParam);
         params.put(routeIDParam, ((Integer) route_id).toString());
@@ -47,7 +47,7 @@ public class TransportClientSumy extends TransportClient {
     }
 
     @Override
-    public void loadRoutePath(TransportRoute route) {
+    public synchronized void loadRoutePath(TransportRoute route) {
         params.clear();
         params.put(actParam, getRoutePathParam);
         params.put(routeIDParam, String.valueOf(route.getId()));
@@ -64,15 +64,17 @@ public class TransportClientSumy extends TransportClient {
     }
 
     @Override
-    public void loadRouteDetails(TransportRoute route) {
+    public synchronized void loadRouteDetails(TransportRoute route) {
         params.clear();
         params.put(actParam, getRouteDetailsParam);
+        params.put(routeIDParam, String.valueOf(route.getId()));
         try {
             JSONArray ja = JSONURLReader.read2JA(getUrl());
             RouteGPSImporter.loadRouteDetails(ja, route);
 
 
         } catch (Exception e) {
+            e.printStackTrace();
 
         }
     }
