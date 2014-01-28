@@ -2,6 +2,8 @@ package com.snake.mapviewproxy;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import org.osmdroid.tileprovider.MapTileProviderBasic;
+import org.osmdroid.tileprovider.modules.MapTileFilesystemProvider;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -25,6 +27,7 @@ public class MapViewProxyOSM extends MapViewProxy {
         this.mMapView = mapView;
         this.mContext = context;
         this.mMapView.setUseSafeCanvas(true);
+
     }
 
     @Override
@@ -59,12 +62,13 @@ public class MapViewProxyOSM extends MapViewProxy {
 
     @Override
     public void setScrollableAreaLimit(BoundingBox area) {
+        final int margin = 5;
         mAreaLimit =
                 new BoundingBoxE6(
-                        area.getNorth(),
-                        area.getEast(),
-                        area.getSouth(),
-                        area.getWest()
+                        area.getNorth()-margin,
+                        area.getEast()+margin,
+                        area.getSouth()+margin,
+                        area.getWest()-margin
                 );
         mMapView.setScrollableAreaLimit(mAreaLimit);
 

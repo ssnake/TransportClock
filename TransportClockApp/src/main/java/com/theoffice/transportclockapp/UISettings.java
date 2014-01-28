@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class UISettings {
     HashMap<Integer, Boolean> routeVisiableList = new HashMap<Integer, Boolean>();
-
+    Integer currentRouteID;
 
     public  Boolean IsVisiable(TransportRoute route)
     {
@@ -24,4 +24,11 @@ public class UISettings {
 
     }
 
+    public Integer getCurrentRouteID() {
+        return currentRouteID;
+    }
+
+    public void setCurrentRouteID(Integer currentRouteID) {
+        this.currentRouteID = currentRouteID;
+    }
 }
