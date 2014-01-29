@@ -8,6 +8,7 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.safecanvas.ISafeCanvas;
 
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +59,12 @@ public class MapViewMarksOverlayProxyOSM extends MapViewMarksOverlayProxy {
         this.listiner = listiner;
     }
 
+    @Override
+    public void free() {
+        mListOverlay.remove(marksOverlay);
+
+    }
+
     public class MarksOverlay extends ItemizedOverlay<OverlayItem> {
         private Vector<OverlayItem> itemList = new Vector<OverlayItem>();
         private Vector<MapViewOverlayItemProxy> proxyItemList = new Vector<MapViewOverlayItemProxy>();
@@ -92,6 +99,7 @@ public class MapViewMarksOverlayProxyOSM extends MapViewMarksOverlayProxy {
         public void addItem(OverlayItem item, MapViewOverlayItemProxy proxyItem)
         {
 
+
             itemList.add(item);
             proxyItemList.add(proxyItem);
 
@@ -106,6 +114,7 @@ public class MapViewMarksOverlayProxyOSM extends MapViewMarksOverlayProxy {
         public int size() {
             return itemList.size();
         }
+
 
 
         @Override

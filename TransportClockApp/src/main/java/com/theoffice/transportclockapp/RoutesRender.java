@@ -60,7 +60,8 @@ public class RoutesRender {
         } else
         if (pathOverlay != null)
         {
-            mMapViewProxy.delPathOverlay(pathOverlay);
+
+            mMapViewProxy.delOverlay(pathOverlay);
             mRouteOverlayMap.remove(route);
 
         }

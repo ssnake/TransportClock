@@ -16,7 +16,7 @@ public abstract class MapViewProxy {
     public abstract MapViewPathOverlayProxy addPathOverlay(int default_color);
     public abstract void setCenter(GeoPoint point);
 
-    public abstract void delPathOverlay(MapViewPathOverlayProxy pathOverlay);
+    public abstract void delOverlay(MapViewOverlay pathOverlay);
 
     public abstract void refresh();
     public abstract Context getContext();

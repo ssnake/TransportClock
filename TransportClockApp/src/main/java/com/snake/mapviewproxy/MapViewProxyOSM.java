@@ -19,8 +19,8 @@ public class MapViewProxyOSM extends MapViewProxy {
     MapView mMapView;
     Context mContext;
     CompassOverlay mCompOverlay;
-    Vector<MapViewMarksOverlayProxy> mMarksOverlayList = new Vector<MapViewMarksOverlayProxy>();
-    Vector<MapViewPathOverlayProxy> mPathOverlayList = new Vector<MapViewPathOverlayProxy>();
+    Vector<MapViewOverlay> mOverlayList = new Vector<MapViewOverlay>();
+
     BoundingBoxE6 mAreaLimit;
 
     public MapViewProxyOSM(MapView mapView, Context context) {
@@ -43,9 +43,10 @@ public class MapViewProxyOSM extends MapViewProxy {
     }
 
     @Override
-    public void delPathOverlay(MapViewPathOverlayProxy pathOverlay) {
-        pathOverlay.free();
-        mPathOverlayList.remove(pathOverlay);
+    public void delOverlay(MapViewOverlay overlay) {
+        if (overlay != null)
+            overlay.free();
+        mOverlayList.remove(overlay);
 
     }
 
@@ -62,7 +63,7 @@ public class MapViewProxyOSM extends MapViewProxy {
 
     @Override
     public void setScrollableAreaLimit(BoundingBox area) {
-        final int margin = 5;
+        final Double margin = 0.1;
         mAreaLimit =
                 new BoundingBoxE6(
                         area.getNorth()-margin,
@@ -107,7 +108,7 @@ public class MapViewProxyOSM extends MapViewProxy {
     @Override
     public MapViewPathOverlayProxy addPathOverlay(int default_color) {
         MapViewPathOverlayProxy pop = new MapViewPathOverlayProxyOSM(mContext, mMapView.getOverlays(), default_color, 5);
-        mPathOverlayList.add(pop);
+        mOverlayList.add(pop);
         return pop;
     }
 
@@ -121,7 +122,7 @@ public class MapViewProxyOSM extends MapViewProxy {
     public MapViewMarksOverlayProxy addMarksOverlay(Integer default_drawable_id) {
         Drawable drawable = mContext.getResources().getDrawable(default_drawable_id);
         MapViewMarksOverlayProxy ret = new MapViewMarksOverlayProxyOSM(drawable, this.mMapView);
-        mMarksOverlayList.add(ret);
+        mOverlayList.add(ret);
         return ret;
     }
 }

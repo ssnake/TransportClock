@@ -55,7 +55,7 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
         mPopupRouteWindow.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
         mPopupRouteWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
 
-        mCarUpdateTimer = new Timer();
+
 
         mvProxy.setCenter(new GeoPoint(50.90633, 34.81854));
 
@@ -142,10 +142,11 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
     }
     private void showRoutePath(TransportRoute route, boolean isVisiable) {
         mRouteRender.showRoute(route, isVisiable);
-        enableTimer(isVisiable);
+
+
 
         if (isVisiable) {
-
+            enableTimer(true);
             mvProxy.setScrollableAreaLimit(MapViewProxy.BoundingBox.MakeBoundingBox(route));
             mvProxy.setZoom(13);
         }
@@ -154,6 +155,7 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
         if (enabled) {
             final AsyncClientTask.TaskUpdateListener listener = this;
+            mCarUpdateTimer = new Timer();
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
@@ -166,9 +168,13 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
                 }
             };
-            mCarUpdateTimer.scheduleAtFixedRate(task, 0, 5000);
-        } else
-              mCarUpdateTimer.cancel();
+            mCarUpdateTimer.scheduleAtFixedRate(task, 0, 10000);
+        } else {
+            if (mCarUpdateTimer != null)
+                mCarUpdateTimer.cancel();
+            mCarUpdateTimer = null;
+        }
+
 
     }
 
@@ -176,21 +182,21 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
     public void onTaskUpdate(ClientTask task) {
         if (task instanceof ClientTask.LoadRouteNames) {
             ClientTask.GetTaskRouteList(task, mRouteList);
-
         }
+
         if (task instanceof ClientTask.LoadRouteCars) {
           ClientTask.GetTaskCarList(task, mCarList);
           mCarRender.clear();
-          mCarRender.showCars(mCarList);
+          if (mCarUpdateTimer != null)
+              mCarRender.showCars(mCarList);
         }
+
         if (task instanceof ClientTask.LoadRouteDetails) {
             new AsyncClientTask(this).execute(ClientTask.MakeLoadRoutePath(mClient, task.mRoute));
-
         }
+
         if (task instanceof ClientTask.LoadRoutePath) {
             showRoutePath(task.mRoute, true);
-
-
         }
 
 
@@ -202,10 +208,12 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
         if (isVisiable) {
             mSettings.setCurrentRouteID(route.getId());
+            enableTimer(false);
+            mCarRender.clear();
             new AsyncClientTask(this).execute(ClientTask.MakeLoadRouteDetails(mClient, route));
 
         } else
-            showRoutePath(route, isVisiable);
+            showRoutePath(route, false);
     }
 
 
