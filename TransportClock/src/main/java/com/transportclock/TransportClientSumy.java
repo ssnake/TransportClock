@@ -39,7 +39,7 @@ public class TransportClientSumy extends TransportClient {
         try {
             JSONObject jo = JSONURLReader.read2JO(getUrl());
             CarGPSImporter.load(jo, carList);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -57,7 +57,7 @@ public class TransportClientSumy extends TransportClient {
             JSONArray ja = JSONURLReader.read2JA(getUrl());
             RouteGPSImporter.loadRoutePoints(ja, route);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

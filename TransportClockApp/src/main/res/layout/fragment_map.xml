@@ -11,14 +11,24 @@
             android:layout_height="match_parent"
             tilesource="Mapnik"
             />
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Routes"
-            android:id="@+id/btnChooseRoutes" android:layout_gravity="center_horizontal"
-            android:clickable="true"
-            android:enabled="true"
-            android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/routeName" android:layout_alignBottom="@+id/btnChooseRoutes"
+                android:layout_toRightOf="@+id/btnChooseRoutes" android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
+                android:textColor="@android:color/black" android:textSize="@dimen/activity_vertical_margin"
+                android:gravity="center"
+                android:textStyle="bold" android:textAppearance="@android:color/background_dark"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Routes"
+                android:id="@+id/btnChooseRoutes" android:layout_gravity="center_horizontal"
+                android:clickable="true"
+                android:enabled="true"
+                android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
 
 </RelativeLayout>

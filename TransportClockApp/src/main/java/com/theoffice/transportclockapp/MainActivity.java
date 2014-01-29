@@ -20,6 +20,7 @@ import org.osmdroid.views.MapView;
 public class MainActivity extends Activity implements  View.OnClickListener, AsyncClientTask.TaskUpdateListener, AppHelper.OnRouteSelectedListiner {
     MapView mMapView;
     MapViewProxy mvProxy;
+    TextView mRouteName;
     TransportClient mClient;
     List<TransportRoute> mRouteList;
     List<TransportCar> mCarList;
@@ -47,6 +48,7 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
         mvProxy.setMultiTouchControls(true);
         mvProxy.setZoom(15);
 
+        mRouteName = (TextView) findViewById(R.id.routeName);
         mRouteRender = new RoutesRender(mvProxy);
         mCarRender = new CarsRender(mvProxy);
         mRouteSelectedListiner = new RouteSelectedListener(this);
@@ -128,8 +130,7 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
                 mPopupRouteWindow.setContentView(lv);
                 mPopupRouteWindow.showAsDropDown(this.findViewById(R.id.btnChooseRoutes));
-            } else
-                Toast.makeText(this, R.string.waitingForRoutes, Toast.LENGTH_SHORT ).show();
+            };
      }
 
     @Override
@@ -141,12 +142,16 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
         }
     }
     private void showRoutePath(TransportRoute route, boolean isVisiable) {
+
         mRouteRender.showRoute(route, isVisiable);
 
 
 
         if (isVisiable) {
-            enableTimer(true);
+            if (route.size() ==0)
+                Toast.makeText(this, R.string.routeHasNoPath, Toast.LENGTH_SHORT).show();
+            else
+                enableTimer(true);
             mvProxy.setScrollableAreaLimit(MapViewProxy.BoundingBox.MakeBoundingBox(route));
             mvProxy.setZoom(13);
         }
@@ -208,6 +213,7 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
         if (isVisiable) {
             mSettings.setCurrentRouteID(route.getId());
+            mRouteName.setText(route.getName());
             enableTimer(false);
             mCarRender.clear();
             new AsyncClientTask(this).execute(ClientTask.MakeLoadRouteDetails(mClient, route));
