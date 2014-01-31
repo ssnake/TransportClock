@@ -121,6 +121,7 @@ public class MapViewProxyOSM extends MapViewProxy {
     @Override
     public MapViewMarksOverlayProxy addMarksOverlay(Integer default_drawable_id) {
         Drawable drawable = mContext.getResources().getDrawable(default_drawable_id);
+        Helper.boundCenter(drawable);
         MapViewMarksOverlayProxy ret = new MapViewMarksOverlayProxyOSM(drawable, this.mMapView);
         mOverlayList.add(ret);
         return ret;

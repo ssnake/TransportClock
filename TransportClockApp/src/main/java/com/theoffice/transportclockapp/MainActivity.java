@@ -159,6 +159,8 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
             int maxWidth = displaymetrics.widthPixels;
 
             ListView lv = new ListView(this);
+            lv.setItemsCanFocus(false);
+            lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
             lv.setAdapter(new RouteListAdapter(this, mRouteList, mSettings, mRouteSelectedListiner));
             if (mRouteList.size() > 0) {
 
@@ -257,14 +259,17 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
             showRoutePath(route, false);
     }
 
-
+    @Override
+    public TransportRoute getLastSelectedRoute() {
+        return TransportRouteList.findByID(mSettings.getCurrentRouteID(), mRouteList);
+    }
 
 
     public class RouteSelectedListener implements View.OnClickListener
         {
             AppHelper.OnRouteSelectedListiner mListiner;
 
-            View mCheckedView = null;
+
 
 
             RouteSelectedListener(AppHelper.OnRouteSelectedListiner listener) {
@@ -275,16 +280,12 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
             @Override
             public void onClick(View v) {
                 RadioButton rb = (RadioButton) v;
-                if (mCheckedView != null && mCheckedView != v) {
-                    ((RadioButton) mCheckedView).setChecked(false);
-                    TransportRoute r = (TransportRoute) mCheckedView.getTag();
-                    mListiner.onRouteSelected(r, false);
+                TransportRoute lastRoute = mListiner.getLastSelectedRoute();
+                TransportRoute route = (TransportRoute) v.getTag();
+                if (lastRoute != route)
+                    mListiner.onRouteSelected(lastRoute, false);
 
-                }
-                mCheckedView = v;
-                TransportRoute r = (TransportRoute) v.getTag();
-
-                mListiner.onRouteSelected(r, rb.isChecked());
+                mListiner.onRouteSelected(route, rb.isChecked());
 
                 mPopupRouteWindow.dismiss();
 

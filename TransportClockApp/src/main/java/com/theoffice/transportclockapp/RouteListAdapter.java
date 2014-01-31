@@ -48,6 +48,8 @@ public class RouteListAdapter extends ArrayAdapter<TransportRoute> {
         return rowView;
     }
 
+
+
     static class ViewHolder{
         public RadioButton routeName;
     }

@@ -78,19 +78,12 @@ public class MapViewMarksOverlayProxyOSM extends MapViewMarksOverlayProxy {
             super(drawable, mapView.getResourceProxy());
             this.mapView = mapView;
             this.overlayProxy = overlayProxy;
-            boundCenterBottom(drawable);
+            //boundCenterBottom(drawable);
+            //boundCenter(drawable);
 
         }
-        void boundCenterBottom(Drawable drawable)
-        {
-            drawable.setBounds(
-                    drawable.getIntrinsicWidth() / -2,
-                    - drawable.getIntrinsicHeight(),
-                    drawable.getIntrinsicWidth() / 2,
-                    0);
 
 
-        }
         public void removeItem(OverlayItem item, MapViewOverlayItemProxy proxyItem) {
 
             itemList.remove(item);
