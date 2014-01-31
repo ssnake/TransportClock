@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.widget.Toast;
+import com.snake.mapviewproxy.Helper;
 import com.snake.mapviewproxy.MapViewMarksOverlayProxy;
 import com.snake.mapviewproxy.MapViewOverlayItemProxy;
 import com.snake.mapviewproxy.MapViewProxy;
@@ -62,6 +63,7 @@ public class CarsRender implements MapViewMarksOverlayProxy.OnMarkClickListiner 
     {
         Bitmap arrowBitmap = BitmapFactory.decodeResource(mMapViewProxy.getContext().getResources(),
                 mCarDrawableID);
+        ;
         // Create blank bitmap of equal size
         Bitmap canvasBitmap = arrowBitmap.copy(Bitmap.Config.ARGB_8888, true);
         canvasBitmap.eraseColor(0x00000000);
@@ -75,8 +77,9 @@ public class CarsRender implements MapViewMarksOverlayProxy.OnMarkClickListiner 
 
         // Draw bitmap onto canvas using matrix
         canvas.drawBitmap(arrowBitmap, rotateMatrix, null);
-
-        return new BitmapDrawable(null, canvasBitmap);
+        Drawable retDrawable =new BitmapDrawable(null, canvasBitmap);
+        Helper.boundCenter(retDrawable);
+        return  retDrawable;
     }
     public void clear() {
         mMapViewProxy.delOverlay(mCarOverlay);
