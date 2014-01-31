@@ -11,9 +11,7 @@ import android.view.*;
 import android.widget.*;
 import com.snake.mapviewproxy.MapViewProxy;
 import com.snake.mapviewproxy.MapViewProxyOSM;
-import com.transportclock.TransportCar;
-import com.transportclock.TransportClient;
-import com.transportclock.TransportRoute;
+import com.transportclock.*;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
@@ -64,6 +62,7 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
 
         bindUI();
+
         loadRoutes();
 
 
@@ -72,7 +71,34 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
     @Override
     protected void onStart() {
         super.onStart();
+        loadSettings();
+        int id = mSettings.getCurrentRouteID();
+        if (id != TransportConst.NOID) {
+            TransportRoute r = TransportRouteList.findByID(id, mRouteList);
+            if (r != null)
+                onRouteSelected(r, true);
+        };
 
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        enableTimer(mSettings.getTimerEnabled());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        enableTimer(mSettings.getTimerEnabled());
+        saveSetting();
     }
 
     @Override
@@ -96,11 +122,19 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
     }
 
 
-
+    void loadSettings() {
+        mSettings.load(getPreferences(Context.MODE_PRIVATE));
+    }
+    void saveSetting() {
+        mSettings.save(getPreferences(Context.MODE_PRIVATE));
+    }
 
 
     void loadRoutes() {
-            new AsyncClientTask(this).execute(ClientTask.MakeLoadRouteNames(mClient));
+        ClientTask task = ClientTask.MakeLoadRouteNames(mClient);
+        task.run();
+        onTaskUpdate(task);
+        //new AsyncClientTask(this).execute(ClientTask.MakeLoadRouteNames(mClient));
 
     }
 
@@ -152,12 +186,13 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
                 Toast.makeText(this, R.string.routeHasNoPath, Toast.LENGTH_SHORT).show();
             else
                 enableTimer(true);
+
             mvProxy.setScrollableAreaLimit(MapViewProxy.BoundingBox.MakeBoundingBox(route));
             mvProxy.setZoom(13);
         }
     }
     private void enableTimer(Boolean enabled) {
-
+        mSettings.setTimerEnabled(enabled);
         if (enabled) {
             final AsyncClientTask.TaskUpdateListener listener = this;
             mCarUpdateTimer = new Timer();
