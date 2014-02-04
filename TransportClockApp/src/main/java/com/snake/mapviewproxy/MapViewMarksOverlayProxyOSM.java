@@ -78,6 +78,8 @@ public class MapViewMarksOverlayProxyOSM extends MapViewMarksOverlayProxy {
             super(drawable, mapView.getResourceProxy());
             this.mapView = mapView;
             this.overlayProxy = overlayProxy;
+
+
             //boundCenterBottom(drawable);
             //boundCenter(drawable);
 

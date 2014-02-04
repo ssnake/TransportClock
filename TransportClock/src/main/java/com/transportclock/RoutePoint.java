@@ -11,29 +11,19 @@ import java.io.StringWriter;
 public class RoutePoint {
     private static final String latField = "lat";
     private static final String lngField = "lng";
-    public static final int  StartPoint = 1;
-    public static final int  FinishPoint = 2;
-    public static final int  BusStopPoint = 3;
+
 
     Float lat;
     Float lng;
-    int type;
 
-    public int getType() {
-        return type;
-    }
 
 
     public RoutePoint(Float lat, Float lng)
     {
-        this(lat, lng, BusStopPoint);
-    }
-    public RoutePoint(Float lat, Float lng, int pointType)
-    {
-        this.type = pointType;
         this.lat = lat;
         this.lng = lng;
     }
+
     public Float getLat() {
         return lat;
     }
@@ -69,7 +59,5 @@ public class RoutePoint {
     }
 
 
-    public boolean isBusStop() {
-        return getType() == BusStopPoint;
-    }
+
 }

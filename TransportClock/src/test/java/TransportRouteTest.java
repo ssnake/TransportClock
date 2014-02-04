@@ -1,7 +1,11 @@
 import com.transportclock.RoutePoint;
 import com.transportclock.TransportRoute;
+import com.transportclock.TransportRouteList;
 import junit.framework.TestCase;
 import org.junit.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -71,6 +75,31 @@ public class TransportRouteTest extends TestCase {
         r.add(1.1f, 2.3f);
         r.add(2.2f, 3.3f);
         assertEquals("[\"{\\\"lng\\\":2.3,\\\"lat\\\":1.1}\",\"{\\\"lng\\\":3.3,\\\"lat\\\":2.2}\"]", r.toJSON());
+    }
+    public void testNearest() {
+        List<TransportRoute> routeList = new ArrayList<TransportRoute>();
+        TransportRoute r1 = new TransportRoute();
+        r1.add(1.0f, 0.0f);
+        r1.add(2.0f, 0.0f);
+        r1.add(3.0f, 0.0f);
+
+        TransportRoute r2 = new TransportRoute();
+        r1.add(0.0f, 1.0f);
+        r1.add(0.0f, 2.0f);
+        r1.add(0.0f, 3.0f);
+
+        routeList.add(r1);
+        routeList.add(r2);
+        assertTrue(r1.findNearestPoint(new RoutePoint(2.0f, 1.0f)).equals(new RoutePoint(2.0f, 0.0f)));
+        assertTrue(
+                TransportRouteList.findNearestPoint(new RoutePoint(2.0f, 1.0f), routeList).
+                        equals(
+                                new RoutePoint(2.0f,0.0f)));
+        assertTrue(
+                TransportRouteList.findNearestPoint(new RoutePoint(1.0f, 3.0f), routeList).
+                        equals(
+                                new RoutePoint(0.0f,3.0f)));
+
     }
     public static void main(String args[])
     {

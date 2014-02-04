@@ -13,6 +13,24 @@ public class TransportCar {
     Float angle;
     Boolean avaible;
 
+    public TransportCar(Float lat, Float lng) {
+        this();
+        this.lat = lat;
+        this.lng = lng;
+
+    }
+
+    public TransportCar() {
+        avaible = false;
+        speed = 0.0f;
+        lat = 0.0f;
+        lng = 0.0f;
+        angle = 0.0f;
+        name = "";
+
+
+    }
+
     public Boolean getAvaible() {
         return avaible;
     }
@@ -79,5 +97,14 @@ public class TransportCar {
 
     public String toRaw() {
         return String.format("id=%d\nroute_id=%d\nname=%s\nspeed=%f\nangle=%f\navaible=%s", id, route_id, name, speed, angle, avaible.toString());
+    }
+
+    public RoutePoint getPoint() {
+        return new RoutePoint(getLat(), getLng());
+    }
+
+    public void setPoint(RoutePoint carPoint) {
+        setLat(carPoint.getLat());
+        setLng(carPoint.getLng());
     }
 }

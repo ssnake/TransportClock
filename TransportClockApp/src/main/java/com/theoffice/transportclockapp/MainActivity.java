@@ -219,6 +219,13 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
 
     }
+    void glueCarsToRoute() {
+        for(TransportCar car: mCarList) {
+            RoutePoint carPoint = TransportRouteList.findNearestPoint(car.getPoint(), mRouteList);
+            if (carPoint != null)
+                car.setPoint(carPoint);
+        }
+    }
 
     @Override
     public void onTaskUpdate(ClientTask task) {
@@ -229,8 +236,10 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
         if (task instanceof ClientTask.LoadRouteCars) {
           ClientTask.GetTaskCarList(task, mCarList);
           mCarRender.clear();
-          if (mCarUpdateTimer != null)
+          if (mCarUpdateTimer != null){
+              glueCarsToRoute();
               mCarRender.showCars(mCarList);
+          }
         }
 
         if (task instanceof ClientTask.LoadRouteDetails) {

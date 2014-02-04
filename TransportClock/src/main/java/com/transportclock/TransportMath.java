@@ -19,4 +19,7 @@ public class TransportMath {
 
         return ((Double) dist).floatValue();
     }
+    public static Float calcDist(RoutePoint p1, RoutePoint p2) {
+        return calcDist(p1.getLat(), p1.getLng(), p2.getLat(), p2.getLng());
+    }
 }

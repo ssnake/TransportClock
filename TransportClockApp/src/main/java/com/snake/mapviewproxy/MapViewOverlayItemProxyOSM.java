@@ -26,12 +26,9 @@ public class MapViewOverlayItemProxyOSM extends MapViewOverlayItemProxy {
 
     @Override
     public void setDrawable(Drawable drawable) {
-        drawable.setBounds(
-                0 - drawable.getIntrinsicWidth() / 2,
-                0 - drawable.getIntrinsicHeight() ,
-                drawable.getIntrinsicWidth() / 2,
-                0);
+
         mOverlayItem.setMarker(drawable);
+        mOverlayItem.setMarkerHotspot(OverlayItem.HotspotPlace.CENTER);
 
 
     }

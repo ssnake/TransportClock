@@ -25,7 +25,7 @@ public class CarsRender implements MapViewMarksOverlayProxy.OnMarkClickListiner 
     MapViewProxy mMapViewProxy;
     MapViewMarksOverlayProxy mCarOverlay;
     HashMap<Integer, MapViewOverlayItemProxy> mCarMarkList;
-    int mCarDrawableID = R.drawable.nav_up_red;
+    int mCarDrawableID = R.drawable.nav_right_red;
 
     int getCarID(TransportCar car) {
         return car.getRoute_id() % 100 * 100 + car.getId() % 100;
@@ -43,7 +43,8 @@ public class CarsRender implements MapViewMarksOverlayProxy.OnMarkClickListiner 
         mCarOverlay.setOnMarkClickListiner(this);
     }
     private void showCar(TransportCar car) {
-
+        if (!car.getAvaible())
+            return;
         MapViewOverlayItemProxy item = mCarMarkList.get(getCarID(car));
         if (item == null) {
            item = mCarOverlay.addItem(
@@ -53,7 +54,10 @@ public class CarsRender implements MapViewMarksOverlayProxy.OnMarkClickListiner 
            );
            mCarMarkList.put(getCarID(car), item);
         }
-        item.setDrawable(rotateDrawable(car.getAngle()));
+        Drawable d = rotateDrawable(car.getAngle());
+        Helper.boundCenterBottom(d);
+        item.setDrawable(d);
+
         item.setTag(car);
 
 
@@ -73,12 +77,12 @@ public class CarsRender implements MapViewMarksOverlayProxy.OnMarkClickListiner 
 
         // Create rotation matrix
         Matrix rotateMatrix = new Matrix();
-        rotateMatrix.setRotate(angle, canvas.getWidth()/2, canvas.getHeight()/2);
+        rotateMatrix.setRotate(-angle, canvas.getWidth()/2, canvas.getHeight()/2);
 
         // Draw bitmap onto canvas using matrix
         canvas.drawBitmap(arrowBitmap, rotateMatrix, null);
         Drawable retDrawable =new BitmapDrawable(null, canvasBitmap);
-        Helper.boundCenter(retDrawable);
+
         return  retDrawable;
     }
     public void clear() {
