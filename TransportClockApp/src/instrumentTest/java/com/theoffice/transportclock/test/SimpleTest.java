@@ -3,12 +3,9 @@ package com.theoffice.transportclock.test;
 import android.test.AndroidTestCase;
 import com.theoffice.transportclockapp.AsyncClientTask;
 import com.theoffice.transportclockapp.ClientTask;
-import com.theoffice.transportclockapp.TransportClientLocal;
 import com.transportclock.TransportClient;
 import com.transportclock.TransportClientSumy;
-import com.transportclock.TransportRoute;
 
-import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
 /**

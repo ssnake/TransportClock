@@ -1,4 +1,4 @@
-package com.theoffice.transportclockapp;
+package com.snake.transportclockapp;
 
 import android.graphics.Color;
 import com.snake.mapviewproxy.MapViewPathOverlayProxy;

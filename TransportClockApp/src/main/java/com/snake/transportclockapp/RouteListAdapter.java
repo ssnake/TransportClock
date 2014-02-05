@@ -1,4 +1,4 @@
-package com.theoffice.transportclockapp;
+package com.snake.transportclockapp;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,6 @@ import android.widget.*;
 import com.transportclock.TransportRoute;
 
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Created by snake on 27.12.13.

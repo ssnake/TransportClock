@@ -1,4 +1,4 @@
-package com.theoffice.transportclockapp;
+package com.snake.transportclockapp;
 
 import android.content.SharedPreferences;
 import com.transportclock.TransportConst;

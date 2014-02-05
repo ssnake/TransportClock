@@ -1,4 +1,4 @@
-package com.theoffice.transportclockapp;
+package com.snake.transportclockapp;
 
 import com.transportclock.TransportCar;
 import com.transportclock.TransportClient;
