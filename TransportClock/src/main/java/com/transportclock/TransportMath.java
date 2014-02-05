@@ -4,6 +4,7 @@ package com.transportclock;
  * Created by snake on 13.12.13.
  */
 public class TransportMath {
+    /* calc distance in meters */
     public static Float calcDist(Float lat1, Float lng1, Float lat2, Float lng2)
     {
         double earthRadius =6371000.8;

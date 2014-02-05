@@ -221,7 +221,7 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
     }
     void glueCarsToRoute() {
         for(TransportCar car: mCarList) {
-            RoutePoint carPoint = TransportRouteList.findNearestPoint(car.getPoint(), mRouteList);
+            RoutePoint carPoint = TransportRouteList.findNearestPoint(car.getPoint(), mRouteList, 50);
             if (carPoint != null)
                 car.setPoint(carPoint);
         }
@@ -291,7 +291,7 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
                 RadioButton rb = (RadioButton) v;
                 TransportRoute lastRoute = mListiner.getLastSelectedRoute();
                 TransportRoute route = (TransportRoute) v.getTag();
-                if (lastRoute != route)
+                if (lastRoute != route && lastRoute != null)
                     mListiner.onRouteSelected(lastRoute, false);
 
                 mListiner.onRouteSelected(route, rb.isChecked());

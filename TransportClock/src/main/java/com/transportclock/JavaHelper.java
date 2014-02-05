@@ -18,7 +18,7 @@ public  class JavaHelper {
     }
     public static Float getAngle(RoutePoint p1, RoutePoint p2) {
        Double angle = Math.atan((p2.getLng() - p1.getLng()) / (p2.getLat() - p1.getLat()));
-       angle = Math.atan2(p2.getLng() - p1.getLng(), p2.getLat() - p1.getLat());
+       angle = Math.atan2( p2.getLat() - p1.getLat(), p2.getLng() - p1.getLng());
        angle = Math.toDegrees(angle);
        if(angle < 0) {
             angle += 360;

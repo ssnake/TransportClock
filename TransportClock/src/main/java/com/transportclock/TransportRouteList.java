@@ -16,16 +16,15 @@ public class TransportRouteList extends Vector<TransportRoute> {
 
     }
 
-    public static RoutePoint findNearestPoint(RoutePoint point, List<TransportRoute> list) {
+    public static RoutePoint findNearestPoint(RoutePoint point, List<TransportRoute> list, int radiusM) {
         RoutePoint retPoint = null;
-        Float retDist = Float.MAX_VALUE;
+        Float retDist = Float.valueOf(radiusM);
         for(TransportRoute r: list) {
 
             RoutePoint nearestPoint = r.findNearestPoint(point);
             if (nearestPoint == null)
                 continue;
-            if (retPoint == null)
-                retPoint = nearestPoint;
+
 
             Float dist = TransportMath.calcDist(nearestPoint, point);
             if (dist < retDist)
