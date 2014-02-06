@@ -92,14 +92,23 @@ public class TransportRouteTest extends TestCase {
         routeList.add(r2);
         assertTrue(r1.findNearestPoint(new RoutePoint(2.0f, 1.0f)).equals(new RoutePoint(2.0f, 0.0f)));
         assertTrue(
-                TransportRouteList.findNearestPoint(new RoutePoint(2.0f, 1.0f), routeList, 100).
+                TransportRouteList.findNearestPoint(new RoutePoint(2.0f, 1.0f), routeList, 10000000).
                         equals(
                                 new RoutePoint(2.0f,0.0f)));
         assertTrue(
-                TransportRouteList.findNearestPoint(new RoutePoint(1.0f, 3.0f), routeList, 100).
+                TransportRouteList.findNearestPoint(new RoutePoint(1.0f, 3.0f), routeList, 10000000).
                         equals(
                                 new RoutePoint(0.0f,3.0f)));
 
+    }
+
+    public void testGetCenter() {
+        TransportRoute r = new TransportRoute();
+        r.add(1.0f, 1.0f);
+        r.add(3.0f, 3.0f);
+        r.add(1.0f, 3.0f);
+        r.add(3.0f, 1.0f);
+        assertTrue(r.getCenter().equals(new RoutePoint(2.0f, 2.0f)));
     }
     public static void main(String args[])
     {

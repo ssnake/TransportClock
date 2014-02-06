@@ -2,10 +2,10 @@ package com.theoffice.transportclock.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.MediumTest;
-import com.theoffice.transportclockapp.AsyncClientTask;
-import com.theoffice.transportclockapp.ClientTask;
-import com.theoffice.transportclockapp.MainActivity;
-import com.theoffice.transportclockapp.TransportClientLocal;
+import com.snake.transportclockapp.AsyncClientTask;
+import com.snake.transportclockapp.ClientTask;
+import com.snake.transportclockapp.MainActivity;
+import com.snake.transportclockapp.TransportClientLocal;
 import com.transportclock.TransportCar;
 import com.transportclock.TransportClient;
 import com.transportclock.TransportRoute;

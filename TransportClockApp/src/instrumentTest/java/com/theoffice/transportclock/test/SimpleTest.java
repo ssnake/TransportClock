@@ -1,8 +1,8 @@
 package com.theoffice.transportclock.test;
 
 import android.test.AndroidTestCase;
-import com.theoffice.transportclockapp.AsyncClientTask;
-import com.theoffice.transportclockapp.ClientTask;
+import com.snake.transportclockapp.AsyncClientTask;
+import com.snake.transportclockapp.ClientTask;
 import com.transportclock.TransportClient;
 import com.transportclock.TransportClientSumy;
 
