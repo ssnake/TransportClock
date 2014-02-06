@@ -189,7 +189,13 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
             else
                 enableTimer(true);
 
-            mvProxy.setScrollableAreaLimit(MapViewProxy.BoundingBox.MakeBoundingBox(route));
+            //Sumy center
+            GeoPoint center = new GeoPoint(50.912775, 34.799141);
+            if (route.size() > 0) {
+                mvProxy.setScrollableAreaLimit(MapViewProxy.BoundingBox.MakeBoundingBox(route));
+                center = new GeoPoint(route.getCenter().getLat(), route.getCenter().getLng());
+            }
+            mvProxy.setCenter(center);
             mvProxy.setZoom(13);
         }
     }

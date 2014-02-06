@@ -10,6 +10,14 @@ import org.json.JSONWriter;
  * The class for Transport route
  */
 public class TransportRoute extends Vector<RoutePoint>{
+
+    public RoutePoint getCenter() {
+        return new RoutePoint(
+                (getMostNortLat() + getMostSouthLat()) / 2,
+                (getMostEastLng() + getMostWestLng()) / 2
+        );
+    }
+
     private interface Block {
         public void yield(RoutePoint p);
     }
@@ -136,6 +144,7 @@ public class TransportRoute extends Vector<RoutePoint>{
         }
         return ret;
     }
+
     //place for getters and setters
     public String getName() {
         return name;
