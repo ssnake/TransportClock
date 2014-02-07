@@ -210,7 +210,7 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            new AsyncClientTask(listener).execute(ClientTask.MakeLoadRouteCars(mClient, mSettings.getCurrentRouteID()));
+                            new AsyncClientTask(listener, false).execute(ClientTask.MakeLoadRouteCars(mClient, mSettings.getCurrentRouteID()));
                         }
                     });
 
@@ -257,6 +257,11 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
         }
 
 
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     @Override

@@ -9,4 +9,9 @@
     <string name="Routes">Маршруты</string>
     <string name="waitingForRoutes">Маршруты обновляются...</string>
     <string name="routeHasNoPath">Маршрут недоступен</string>
+    <string name="loading">Загрузка...</string>
+    <string name="routeNamesTask">Название маршрутов</string>
+    <string name="routeDetailsTask">Детали маршрута</string>
+    <string name="routeRoutePath">Точки маршрута</string>
+
 </resources>
