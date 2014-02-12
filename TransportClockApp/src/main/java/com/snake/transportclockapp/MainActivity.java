@@ -1,6 +1,7 @@
 package com.snake.transportclockapp;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import android.app.*;
@@ -8,7 +9,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.*;
 
@@ -23,13 +23,13 @@ import org.osmdroid.tileprovider.modules.ArchiveFileFactory;
 import org.osmdroid.tileprovider.modules.IArchiveFile;
 import org.osmdroid.tileprovider.modules.MapTileFileArchiveProvider;
 import org.osmdroid.tileprovider.modules.MapTileModuleProviderBase;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.tileprovider.util.SimpleRegisterReceiver;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
 public class MainActivity extends Activity implements  View.OnClickListener, AsyncClientTask.TaskUpdateListener, AppHelper.OnRouteSelectedListiner {
+    final String offlineMapFilename = "sumy.zip";
     MapView mMapView;
     MapViewProxy mvProxy;
     TextView mRouteName;
@@ -52,8 +52,8 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 //        setContentView(R.layout.fragment_map);
 //        mMapView = (MapView) findViewById(R.id.mapview);
  //       mRouteName = (TextView) findViewById(R.id.routeName);
-
-       createActivityLayout();
+        makeSureOfflineFileIsOnSD();
+        createActivityLayout();
 
         mClient = new TransportClientLocal(this);
         mRouteList = new Vector<TransportRoute>();
@@ -88,11 +88,21 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
 
     }
-    String getMapsSDCard() {
+
+    String getMapsSDCardPath() {
         String ret = Environment.getExternalStorageDirectory() + "/osmdroid";//"/com.snake.transportclockapp";
         return ret;
 
     }
+
+    void makeSureOfflineFileIsOnSD() {
+        try {
+            AppHelper.copyRawFileToSD(this, R.raw.sumy, getMapsSDCardPath() + "/" + offlineMapFilename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     MapView createMapView() {
         DefaultResourceProxyImpl resProxy = new DefaultResourceProxyImpl(this);
 
@@ -108,8 +118,8 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
                 );
 
         SimpleRegisterReceiver simpleReciever = new SimpleRegisterReceiver(this);
-        File f = new File(getMapsSDCard(), "sumy_2014-02-12_132425.zip");
-        //File f = new File(getMapsSDCard(), "mapQuest_2014-02-07_130300.zip");
+        File f = new File(getMapsSDCardPath(), offlineMapFilename);
+        //File f = new File(getMapsSDCardPath(), "mapQuest_2014-02-07_130300.zip");
         IArchiveFile[] archives = {ArchiveFileFactory.getArchiveFile(f)};
         MapTileModuleProviderBase moduleProvider =
                 new MapTileFileArchiveProvider(
