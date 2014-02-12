@@ -1,11 +1,13 @@
 package com.snake.transportclockapp;
 
+import java.io.File;
 import java.util.*;
 
 import android.app.*;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.*;
@@ -14,7 +16,16 @@ import android.widget.*;
 import com.snake.mapviewproxy.MapViewProxy;
 import com.snake.mapviewproxy.MapViewProxyOSM;
 import com.transportclock.*;
+import org.osmdroid.DefaultResourceProxyImpl;
+import org.osmdroid.ResourceProxy;
+import org.osmdroid.tileprovider.MapTileProviderArray;
+import org.osmdroid.tileprovider.modules.ArchiveFileFactory;
+import org.osmdroid.tileprovider.modules.IArchiveFile;
+import org.osmdroid.tileprovider.modules.MapTileFileArchiveProvider;
+import org.osmdroid.tileprovider.modules.MapTileModuleProviderBase;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.tileprovider.tilesource.XYTileSource;
+import org.osmdroid.tileprovider.util.SimpleRegisterReceiver;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
@@ -77,20 +88,64 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
 
     }
+    String getMapsSDCard() {
+        String ret = Environment.getExternalStorageDirectory() + "/osmdroid";//"/com.snake.transportclockapp";
+        return ret;
+
+    }
+    MapView createMapView() {
+        DefaultResourceProxyImpl resProxy = new DefaultResourceProxyImpl(this);
+
+        XYTileSource offlineTileSource =
+                new XYTileSource(
+                        "MapQuest",
+                        ResourceProxy.string.offline_mode,
+                        11,
+                        18,
+                        256,
+                        ".jpg",
+                        new String[] {"http://127.0.0.1"}
+                );
+
+        SimpleRegisterReceiver simpleReciever = new SimpleRegisterReceiver(this);
+        //File f = new File(getMapsSDCard(), "sumy_2014-02-12_130438.zip");
+        File f = new File(getMapsSDCard(), "mapQuest_2014-02-07_130300.zip");
+        IArchiveFile[] archives = {ArchiveFileFactory.getArchiveFile(f)};
+        MapTileModuleProviderBase moduleProvider =
+                new MapTileFileArchiveProvider(
+                        simpleReciever,
+                        offlineTileSource,
+                        archives
+                );
+        MapTileProviderArray providerArray = new MapTileProviderArray(
+                offlineTileSource,
+                null,
+                new MapTileModuleProviderBase[] {moduleProvider} );
+        providerArray.setUseDataConnection(false);
+
+
+
+        MapView mapView = new MapView(this, 256, resProxy, providerArray);
+        //MapView mapView = new MapView(this, 256);
+        mapView.setUseDataConnection(false);
+
+        MapView.LayoutParams layoutParams =
+                new MapView.LayoutParams(
+                        MapView.LayoutParams.WRAP_CONTENT,
+                        MapView.LayoutParams.WRAP_CONTENT,
+                        null, 0, 0, 0
+
+                );
+        mapView.setLayoutParams(layoutParams);
+        mapView.setId(R.id.mapview);
+        //never use it in this case
+        //mapView.setTileSource(TileSourceFactory.MAPNIK);
+        return mapView;
+    }
     void createActivityLayout() {
         RelativeLayout layout = new RelativeLayout(this);
 
-        mMapView = new MapView(this, 0);
-        MapView.LayoutParams layoutParams =
-            new MapView.LayoutParams(
-                    MapView.LayoutParams.WRAP_CONTENT,
-                    MapView.LayoutParams.WRAP_CONTENT,
-                    null, 0, 0, 0
-
-            );
-        mMapView.setLayoutParams(layoutParams);
-        mMapView.setId(R.id.mapview);
-        mMapView.setTileSource(TileSourceFactory.MAPNIK);
+        mMapView = createMapView();
         layout.addView(mMapView, ViewGroup.LayoutParams.MATCH_PARENT,  ViewGroup.LayoutParams.MATCH_PARENT);
 
         mButton = new Button(this);
