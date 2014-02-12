@@ -4,6 +4,7 @@ import java.util.*;
 
 import android.app.*;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -77,6 +78,8 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
     }
     void createActivityLayout() {
+        RelativeLayout layout = new RelativeLayout(this);
+
         mMapView = new MapView(this, 0);
         MapView.LayoutParams layoutParams =
             new MapView.LayoutParams(
@@ -88,28 +91,46 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
         mMapView.setLayoutParams(layoutParams);
         mMapView.setId(R.id.mapview);
         mMapView.setTileSource(TileSourceFactory.MAPNIK);
-/*
-        mRouteName = new TextView(this);
-        mRouteName.setId(R.id.routeName);
-        mRouteName.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        layout.addView(mMapView, ViewGroup.LayoutParams.MATCH_PARENT,  ViewGroup.LayoutParams.MATCH_PARENT);
 
         mButton = new Button(this);
         mButton.setId(R.id.btnChooseRoutes);
-        mButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        mButton.setText(R.string.Routes);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_LEFT, R.id.mapview);
+        //params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        mButton.setLayoutParams(params);
+        layout.addView(mButton);
 
 
-        mMapView.addView(mButton);
-        mMapView.addView(mRouteName);
-*/      RelativeLayout layout = new RelativeLayout(this);
-        LayoutInflater inflater = (LayoutInflater)this.getSystemService
+        mRouteName = new TextView(this);
+        mRouteName.setId(R.id.routeName);
+        mRouteName.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        mRouteName.setTextColor(Color.BLACK);
+        mRouteName.setTextSize(16);
+        mRouteName.setGravity(Gravity.CENTER);
+        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params2.addRule(RelativeLayout.RIGHT_OF, R.id.btnChooseRoutes);
+        params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        mRouteName.setLayoutParams(params2);
+
+
+        layout.addView(mRouteName);
+
+        /*LayoutInflater inflater = (LayoutInflater)this.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.main_controlls, layout);
 
-        //mMapView.addView(layout);
 
-        //setContentView(mMapView);
+        mRouteName = (TextView) layout.findViewById(R.id.routeName);
+        mButton = (Button) layout.findViewById(R.id.btnChooseRoutes);
+        mMapView.addView(layout, 200, 200);
+        setContentView(mMapView);
+        */
+
+
         setContentView(layout);
-        mMapView.invalidate();;
+        mMapView.invalidate();
         layout.invalidate();
     }
 
@@ -186,8 +207,8 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
 
     void bindUI() {
-            Button b = (Button) findViewById(R.id.btnChooseRoutes);
-            b.setOnClickListener(this);
+
+            mButton.setOnClickListener(this);
     }
 
 

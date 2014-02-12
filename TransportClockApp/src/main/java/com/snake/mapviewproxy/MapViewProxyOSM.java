@@ -28,6 +28,8 @@ public class MapViewProxyOSM extends MapViewProxy {
         this.mContext = context;
         this.mMapView.setUseSafeCanvas(true);
 
+
+
     }
 
     @Override

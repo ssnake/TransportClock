@@ -24,9 +24,9 @@ public class JavaHelperTest extends TestCase {
         assertEquals(45.0f, angle, 1.0f );
         angle = JavaHelper.getAngle(new RoutePoint(0.0f, 0.0f), new RoutePoint(-1.0f, -1.0f));
         assertEquals(180.0f+45.0f, angle, 1.0f );
-        angle = JavaHelper.getAngle(new RoutePoint(0.0f, 0.0f), new RoutePoint(-1.0f, 1.0f));
-        assertEquals(90.0f+45.0f, angle, 1.0f );
         angle = JavaHelper.getAngle(new RoutePoint(0.0f, 0.0f), new RoutePoint(1.0f, -1.0f));
+        assertEquals(90.0f+45.0f, angle, 1.0f );
+        angle = JavaHelper.getAngle(new RoutePoint(0.0f, 0.0f), new RoutePoint(-1.0f, 1.0f));
         assertEquals(270.0f+45.0f, angle, 1.0f );
     }
     public void testGetAngle2() {
