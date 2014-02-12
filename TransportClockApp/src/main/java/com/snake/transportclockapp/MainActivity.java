@@ -5,6 +5,7 @@ import java.util.*;
 import android.app.*;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.*;
 
@@ -12,6 +13,7 @@ import android.widget.*;
 import com.snake.mapviewproxy.MapViewProxy;
 import com.snake.mapviewproxy.MapViewProxyOSM;
 import com.transportclock.*;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
@@ -19,6 +21,7 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
     MapView mMapView;
     MapViewProxy mvProxy;
     TextView mRouteName;
+    Button mButton;
     TransportClient mClient;
     List<TransportRoute> mRouteList;
     List<TransportCar> mCarList;
@@ -33,20 +36,26 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_map);
+
+//        setContentView(R.layout.fragment_map);
+//        mMapView = (MapView) findViewById(R.id.mapview);
+ //       mRouteName = (TextView) findViewById(R.id.routeName);
+
+       createActivityLayout();
+
         mClient = new TransportClientLocal(this);
         mRouteList = new Vector<TransportRoute>();
         mCarList = new Vector<TransportCar>();
 
         mSettings = new UISettings();
 
-        mMapView = (MapView) findViewById(R.id.mapview);
+
         mvProxy = new MapViewProxyOSM(mMapView, this);
         mvProxy.setBuiltInZoomControls(true);
         mvProxy.setMultiTouchControls(true);
         mvProxy.setZoom(15);
 
-        mRouteName = (TextView) findViewById(R.id.routeName);
+
         mRouteRender = new RoutesRender(mvProxy);
         mCarRender = new CarsRender(mvProxy);
         mRouteSelectedListiner = new RouteSelectedListener(this);
@@ -66,6 +75,42 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
         loadRoutes();
 
 
+    }
+    void createActivityLayout() {
+        mMapView = new MapView(this, 0);
+        MapView.LayoutParams layoutParams =
+            new MapView.LayoutParams(
+                    MapView.LayoutParams.WRAP_CONTENT,
+                    MapView.LayoutParams.WRAP_CONTENT,
+                    null, 0, 0, 0
+
+            );
+        mMapView.setLayoutParams(layoutParams);
+        mMapView.setId(R.id.mapview);
+        mMapView.setTileSource(TileSourceFactory.MAPNIK);
+/*
+        mRouteName = new TextView(this);
+        mRouteName.setId(R.id.routeName);
+        mRouteName.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        mButton = new Button(this);
+        mButton.setId(R.id.btnChooseRoutes);
+        mButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+
+        mMapView.addView(mButton);
+        mMapView.addView(mRouteName);
+*/      RelativeLayout layout = new RelativeLayout(this);
+        LayoutInflater inflater = (LayoutInflater)this.getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+        inflater.inflate(R.layout.main_controlls, layout);
+
+        //mMapView.addView(layout);
+
+        //setContentView(mMapView);
+        setContentView(layout);
+        mMapView.invalidate();;
+        layout.invalidate();
     }
 
     @Override

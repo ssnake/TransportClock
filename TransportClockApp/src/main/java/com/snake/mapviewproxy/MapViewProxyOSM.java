@@ -72,7 +72,6 @@ public class MapViewProxyOSM extends MapViewProxy {
                         area.getWest()-margin
                 );
         mMapView.setScrollableAreaLimit(mAreaLimit);
-
         mMapView.getController().animateTo(mAreaLimit.getCenter());
 
     }
