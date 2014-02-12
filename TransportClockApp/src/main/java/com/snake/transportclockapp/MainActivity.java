@@ -98,18 +98,18 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
 
         XYTileSource offlineTileSource =
                 new XYTileSource(
-                        "MapQuest",
+                        "4uMaps",
                         ResourceProxy.string.offline_mode,
-                        11,
-                        18,
+                        12,
+                        15,
                         256,
-                        ".jpg",
+                        ".png",
                         new String[] {"http://127.0.0.1"}
                 );
 
         SimpleRegisterReceiver simpleReciever = new SimpleRegisterReceiver(this);
-        //File f = new File(getMapsSDCard(), "sumy_2014-02-12_130438.zip");
-        File f = new File(getMapsSDCard(), "mapQuest_2014-02-07_130300.zip");
+        File f = new File(getMapsSDCard(), "sumy_2014-02-12_132425.zip");
+        //File f = new File(getMapsSDCard(), "mapQuest_2014-02-07_130300.zip");
         IArchiveFile[] archives = {ArchiveFileFactory.getArchiveFile(f)};
         MapTileModuleProviderBase moduleProvider =
                 new MapTileFileArchiveProvider(
