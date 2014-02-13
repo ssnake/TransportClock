@@ -27,6 +27,7 @@ import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.tileprovider.util.SimpleRegisterReceiver;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.TilesOverlay;
 
 public class MainActivity extends Activity implements  View.OnClickListener, AsyncClientTask.TaskUpdateListener, AppHelper.OnRouteSelectedListiner {
     final String offlineMapFilename = "sumy.zip";
@@ -163,6 +164,8 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
         mButton.setText(R.string.Routes);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.ALIGN_LEFT, R.id.mapview);
+        params.leftMargin = 10;
+        params.topMargin = 10;
         //params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         mButton.setLayoutParams(params);
         layout.addView(mButton);
@@ -177,6 +180,8 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
         RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params2.addRule(RelativeLayout.RIGHT_OF, R.id.btnChooseRoutes);
         params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        params2.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.btnChooseRoutes);
+        params2.addRule(RelativeLayout.ALIGN_TOP, R.id.btnChooseRoutes);
         mRouteName.setLayoutParams(params2);
 
 
@@ -289,8 +294,9 @@ public class MainActivity extends Activity implements  View.OnClickListener, Asy
             this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
             int maxWidth = displaymetrics.widthPixels;
 
-            ListView lv = new ListView(this);
-            lv.setItemsCanFocus(false);
+         //ListView lv = new ListView(this);
+         ListView lv = (ListView) getLayoutInflater().inflate(R.layout.route_listview, null);
+         lv.setItemsCanFocus(false);
             lv.setChoiceMode(lv.CHOICE_MODE_SINGLE);
             lv.setAdapter(new RouteListAdapter(this, mRouteList, mSettings, mRouteSelectedListiner));
             if (mRouteList.size() > 0) {

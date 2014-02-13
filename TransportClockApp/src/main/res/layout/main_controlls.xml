@@ -6,12 +6,13 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/routeName" android:layout_alignBottom="@+id/btnChooseRoutes"
-            android:layout_toRightOf="@+id/btnChooseRoutes" android:layout_alignParentTop="true"
+            android:id="@+id/routeName"
+            android:layout_toRightOf="@+id/btnChooseRoutes"
             android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
             android:textColor="@android:color/black" android:textSize="@dimen/activity_vertical_margin"
             android:gravity="center"
-            android:textStyle="bold"/>
+            android:textStyle="bold" android:text="r" android:layout_alignBottom="@+id/btnChooseRoutes"
+            android:layout_alignParentTop="true"/>
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,6 +21,6 @@
             android:clickable="true"
             android:enabled="true"
             android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_alignParentStart="true" android:layout_marginLeft="19dp"/>
 
 </RelativeLayout>

@@ -26,13 +26,17 @@ public class RoutesRender {
     {
         switch(route.getId() % 8) {
             case 0: return Color.BLUE;
-            case 1: return Color.CYAN;
+            case 1:
+                return 0xFF008080;
             case 2: return Color.GREEN;
             case 3: return Color.MAGENTA;
-            case 4: return Color.LTGRAY;
+            case 4:
+                return 0xFF2c3342;
             case 5: return Color.RED;
-            case 6: return Color.YELLOW;
-            case 7: return Color.DKGRAY;
+            case 6:
+                return 0xFF6a9c53;
+            case 7:
+                return 0xFFa81800;
 
 
         }
