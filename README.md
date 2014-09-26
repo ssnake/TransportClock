@@ -1,5 +1,5 @@
 TransportClock
 ==============
 
-This is android client for http://gps.meria.sumy.ua/ site. 
-It allows you to find nearest bus.
+This is an android client for http://gps.meria.sumy.ua/ site. <br>
+It allows you to a find nearest bus.
