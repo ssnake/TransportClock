@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.7.+'
+        classpath 'com.android.tools.build:gradle:0.9.+'
     }
 }
 apply plugin: 'android'
@@ -22,7 +22,7 @@ android {
     }
 }
 dependencies {
-    compile 'com.android.support:support-v13:+'
+    compile'com.android.support:support-v4:19.1.0'
     compile 'org.slf4j:slf4j-android:1.6.1-RC1'
     compile 'org.osmdroid:osmdroid-android:4.1'
     compile project(':TransportClock')

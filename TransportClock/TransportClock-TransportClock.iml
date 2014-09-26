@@ -21,11 +21,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="TEST" name="Gradle: junit-4.11" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: commons-io-1.3.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: hamcrest-core-1.3" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: json-20131018" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: guava-15.0" level="project" />
+    <orderEntry type="library" exported="" name="json-20131018" level="project" />
+    <orderEntry type="library" exported="" name="guava-15.0" level="project" />
+    <orderEntry type="library" exported="" name="commons-io-1.3.2" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="junit-4.11" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
   </component>
 </module>
 
